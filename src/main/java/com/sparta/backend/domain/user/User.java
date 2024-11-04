@@ -8,7 +8,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -27,11 +26,9 @@ public class User extends BaseEntity {
 
     private String name;
 
+    private String address;
+
     private String image;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime modifiedAt;
 
     @Enumerated(EnumType.STRING)
     private Role role;

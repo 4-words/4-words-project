@@ -1,12 +1,16 @@
 package com.sparta.backend.domain.store;
 
 import com.sparta.backend.domain.BaseEntity;
+import com.sparta.backend.domain.user.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -21,6 +25,10 @@ public class Store extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     private String name;
 
     @Enumerated(EnumType.STRING)
@@ -30,8 +38,6 @@ public class Store extends BaseEntity {
 
     private String introduce;
 
-    private Double starRating;
-
     private String address;
 
     private LocalDateTime openedAt;
@@ -39,4 +45,8 @@ public class Store extends BaseEntity {
     private LocalDateTime closedAt;
 
     private Integer minOrderPrice;
+
+    private Double starRating;
+
+    private StoreStatus status;
 }
