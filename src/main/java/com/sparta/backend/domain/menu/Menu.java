@@ -45,6 +45,12 @@ public class Menu extends BaseEntity {
         this.price = request.getPrice();
 
     }
+
+    public void updated(String name, Integer price) {
+        this.name = name;
+        this.price = price;
+
+    }
 }
 
 

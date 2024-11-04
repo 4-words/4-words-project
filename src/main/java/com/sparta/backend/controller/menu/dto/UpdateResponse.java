@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class CreateResponse {
+public class UpdateResponse {
     private Long id;
     private Long storeId;
     private String name;
@@ -14,12 +14,14 @@ public class CreateResponse {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    public CreateResponse(Menu menu) {
+
+    public UpdateResponse(Menu menu) {
         this.id = menu.getId();
         this.storeId = menu.getStore().getId();
         this.name = menu.getName();
         this.price = menu.getPrice();
         this.createdAt = menu.getCreatedAt();
         this.modifiedAt = menu.getModifiedAt();
+
     }
 }
