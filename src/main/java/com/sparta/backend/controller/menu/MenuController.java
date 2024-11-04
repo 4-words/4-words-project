@@ -1,8 +1,6 @@
 package com.sparta.backend.controller.menu;
 
-import com.sparta.backend.controller.menu.dto.CreateRequest;
-import com.sparta.backend.controller.menu.dto.CreateResponse;
-import com.sparta.backend.controller.menu.dto.MenuReponse;
+import com.sparta.backend.controller.menu.dto.*;
 import com.sparta.backend.domain.menu.MenuStatus;
 import com.sparta.backend.domain.user.User;
 import com.sparta.backend.service.menu.MenuService;
@@ -29,6 +27,20 @@ public class MenuController {
         CreateResponse createResponse = menuService.createMenu(storeId, response, user);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createResponse);
+    }
+
+
+    @PutMapping("/{storeId}/{menuId}")
+    public ResponseEntity<UpdateResponse> updateMenu(@PathVariable Long storeId,
+                                                     @PathVariable Long menuId,
+                                                     @RequestBody UpdateRequest updateRequest,
+                                                     HttpServletRequest request) {
+        User user = (User) request.getAttribute("user");
+        UpdateResponse response = menuService.updateMenu(storeId, menuId, updateRequest, user);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+
+
     }
 
 
