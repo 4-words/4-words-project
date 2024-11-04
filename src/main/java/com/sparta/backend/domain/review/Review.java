@@ -37,4 +37,8 @@ public class Review extends BaseEntity {
     private Menu menu;
 
     private Integer starRating;
+
+    private String content;
+
+    private String image;
 }

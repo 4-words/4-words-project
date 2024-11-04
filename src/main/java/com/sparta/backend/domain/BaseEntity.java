@@ -17,15 +17,15 @@ public abstract class BaseEntity {
     private LocalDateTime createdAt;
 
     @Column(nullable = false)
-    private LocalDateTime updatedAt;
+    private LocalDateTime modifiedAt;
 
     public BaseEntity() {
         this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        this.modifiedAt = LocalDateTime.now();
     }
 
     @PreUpdate
     public void update() {
-        this.updatedAt = LocalDateTime.now();
+        this.modifiedAt = LocalDateTime.now();
     }
 }
