@@ -1,5 +1,6 @@
 package com.sparta.backend.domain.user;
 
+import com.sparta.backend.config.PasswordEncoder;
 import com.sparta.backend.domain.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "users")
+@Getter
 public class User extends BaseEntity {
 
     @Id
@@ -33,4 +35,23 @@ public class User extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    public User(final String email, final String password, final String name, final String address, final String image,
+                final Role role) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.address = address;
+        this.image = image;
+        this.role = role;
+    }
+
+    public static User of(final String email, final String password, final String name, final String address,
+                          final String image, final String role) {
+        return new User(email, password, name, address, image, Role.from(role));
+    }
+
+    public boolean isValidPassword(final String password, final PasswordEncoder passwordEncoder) {
+        return passwordEncoder.matches(password, this.password);
+    }
 }
