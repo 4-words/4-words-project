@@ -2,19 +2,17 @@ package com.sparta.backend.controller.menu;
 
 import com.sparta.backend.controller.menu.dto.CreateRequest;
 import com.sparta.backend.controller.menu.dto.CreateResponse;
-import com.sparta.backend.controller.menu.dto.MenuReponse;
-import com.sparta.backend.domain.menu.MenuStatus;
 import com.sparta.backend.domain.user.User;
 import com.sparta.backend.service.menu.MenuService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
-import static com.sparta.backend.domain.menu.MenuStatus.INACTIVE;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,7 +21,7 @@ public class MenuController {
 
     @PostMapping("/{storeId}")
     public ResponseEntity<CreateResponse> createMenu(@PathVariable Long storeId,
-                                                     @RequestBody CreateRequest response,
+                                                     @RequestBody @Valid CreateRequest response,
                                                      HttpServletRequest request) {
         User user = (User) request.getAttribute("user");
         CreateResponse createResponse = menuService.createMenu(storeId, response, user);
