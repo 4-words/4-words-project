@@ -1,5 +1,6 @@
 package com.sparta.backend.domain.menu;
 
+import com.sparta.backend.controller.menu.dto.CreateRequest;
 import com.sparta.backend.domain.BaseEntity;
 import com.sparta.backend.domain.store.Store;
 import jakarta.persistence.Entity;
@@ -36,4 +37,14 @@ public class Menu extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private MenuStatus status;
+
+
+
+    public Menu(CreateRequest request) {
+        this.name = request.getName();
+        this.price = request.getPrice();
+
+    }
 }
+
+
