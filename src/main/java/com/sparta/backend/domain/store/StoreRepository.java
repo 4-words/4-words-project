@@ -1,4 +1,6 @@
 package com.sparta.backend.domain.store;
 
-public class StoreRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface StoreRepository extends JpaRepository<Store, Long> {
 }
