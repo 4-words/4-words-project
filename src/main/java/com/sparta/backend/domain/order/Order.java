@@ -58,9 +58,4 @@ public class Order extends BaseEntity {
         this.totalPrice = totalPrice;
         this.status = status;
     }
-
-
-
-
-
 }

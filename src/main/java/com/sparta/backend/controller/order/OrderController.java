@@ -3,8 +3,6 @@ package com.sparta.backend.controller.order;
 import com.sparta.backend.common.resolver.AuthenticationUserId;
 import com.sparta.backend.controller.order.dto.CreateOrderRequest;
 import com.sparta.backend.controller.order.dto.CreateOrderResponse;
-import com.sparta.backend.domain.order.OrderRepository;
-import com.sparta.backend.domain.user.User;
 import com.sparta.backend.service.order.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,31 +17,11 @@ public class OrderController {
 
     private final OrderService orderService;
 
-
-    // 1. 주문하기
     @PostMapping("/order")
     public ResponseEntity<CreateOrderResponse> createOrder(
             @RequestBody CreateOrderRequest request,
-            @AuthenticationUserId User user) {
-
-        CreateOrderResponse response = orderService.createOrder(request, user);
+            @AuthenticationUserId Long id) {
+        CreateOrderResponse response = orderService.createOrder(request, id);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
-
-
-
-
-
-    // 2. 주문 내역 조회
-
-
-
-    // 3. 주문 상태 조회
-
-
-
-    // 4. 주문 취소하기
-
-
-
 }

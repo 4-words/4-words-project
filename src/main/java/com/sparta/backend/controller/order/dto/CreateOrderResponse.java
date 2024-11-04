@@ -8,15 +8,13 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 @Getter
 public class CreateOrderResponse {
+
     private Long id;
     private OrderType orderType;
     private String menuName;
     private Integer totalPrice;
     private String storeName;
     private LocalDateTime createdAt;
-
-
-
 
     public CreateOrderResponse(Order order) {
         this.id = order.getId();
@@ -25,8 +23,5 @@ public class CreateOrderResponse {
         this.totalPrice = order.getTotalPrice();
         this.storeName = order.getStore().getName();
         this.createdAt = order.getCreatedAt();
-
-
-
     }
 }
