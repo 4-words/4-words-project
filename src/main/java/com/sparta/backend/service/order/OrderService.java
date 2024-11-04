@@ -26,6 +26,9 @@ public class OrderService {
         Store store = storeRepository.findById(request.getStoreId()).orElseThrow();
         Menu menu = menuRepository.findById(request.getMenuId()).orElseThrow();
         User user = userRepository.findById(id).orElseThrow();
+        if(request.getTotalPrice() < store.getMinOrderPrice()){
+            throw new MinOrderPriceException("")
+        }
         Order order = new Order(user,store,menu, request.getType(), request.getTotalPrice(), OrderStatus.WAITING);
         Order savedOrder = orderRepository.save(order);
         return new CreateOrderResponse(savedOrder);
