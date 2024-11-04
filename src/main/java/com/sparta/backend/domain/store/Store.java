@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "stores")
+@Getter
 public class Store extends BaseEntity {
 
     @Id

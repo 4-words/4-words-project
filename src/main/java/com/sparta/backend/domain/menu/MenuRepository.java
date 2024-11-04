@@ -1,14 +1,9 @@
 package com.sparta.backend.domain.menu;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
-@Repository
 public interface MenuRepository extends JpaRepository<Menu, Long> {
 
-    Optional<Menu> findByIdAAndStatus(Long menuId, final MenuStatus status);
+    List<Menu> findByStoreIdAndStatus(final Long storeId, final MenuStatus status);
 }
-
-
