@@ -11,5 +11,4 @@ public class CreateOrderRequest {
     private OrderType type;
     private Integer totalPrice;
 
-
 }
