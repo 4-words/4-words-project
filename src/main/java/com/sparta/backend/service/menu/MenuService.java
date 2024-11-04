@@ -24,7 +24,7 @@ public class MenuService {
 
     @Transactional
     public CreateResponse createMenu(Long storeId, CreateRequest request, User user) {
-       Store store = storeRepository.findByIdAAndStatus(storeId, StoreStatus.ACTIVE).orElseThrow(() ->
+        Store store = storeRepository.findByIdAAndStatus(storeId, StoreStatus.ACTIVE).orElseThrow(() ->
                 new IllegalArgumentException("해당 가게를 찾을 수 없습니다."));
 
         if (!user.getId().equals(store.getUser().getId())) {
@@ -39,11 +39,11 @@ public class MenuService {
         menuRepository.save(menu);
 
         return new CreateResponse(menu);
-        }
+    }
 
 
     @Transactional
-    public UpdateResponse updateMenu(Long storeId,Long menuId , UpdateRequest updateRequest, User user) {
+    public UpdateResponse updateMenu(Long storeId, Long menuId, UpdateRequest updateRequest, User user) {
         Store store = storeRepository.findByIdAAndStatus(storeId, StoreStatus.ACTIVE).orElseThrow(() ->
                 new IllegalArgumentException("해당 가게를 찾을 수 없습니다."));
 
@@ -66,4 +66,23 @@ public class MenuService {
         return new UpdateResponse(menu);
     }
 
+    @Transactional
+    public void deleteMenu(Long storeId, Long menuId, User user) {
+        Store store = storeRepository.findByIdAAndStatus(storeId, StoreStatus.ACTIVE).orElseThrow(() ->
+                new IllegalArgumentException("해당 가게를 찾을 수 없습니다."));
+
+        Menu menu = menuRepository.findByIdAAndStatus(menuId, MenuStatus.ACTIVE).orElseThrow(() ->
+                new IllegalArgumentException("해당 메뉴를 찾을 수 없습니다."));
+
+        if (!user.getId().equals(store.getUser().getId())) {
+            throw new SecurityException("해당 가게 주인만 메뉴를 수정할 수 있습니다.");
+        }
+
+        if (!user.getRole().equals(Role.OWNER)) {
+            throw new SecurityException("해당 권한이 없습니다.");
+        }
+
+        menu.delete(MenuStatus.INACTIVE);
+        menuRepository.saveAndFlush(menu);
+    }
 }

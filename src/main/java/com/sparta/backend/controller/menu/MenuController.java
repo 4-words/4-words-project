@@ -44,7 +44,16 @@ public class MenuController {
     }
 
 
+    @DeleteMapping("/{storeId}/{menuId}")
+    public ResponseEntity<String> deleteMenu(@PathVariable Long storeId,
+                                             @PathVariable Long menuId,
+                                             HttpServletRequest request) {
+        User user = (User) request.getAttribute("user");
+        menuService.deleteMenu(storeId, menuId, user);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("메뉴 삭제 완료");
 
+
+    }
 
 
 }
