@@ -9,6 +9,7 @@ import com.sparta.backend.domain.store.StoreRepository;
 import com.sparta.backend.domain.store.StoreStatus;
 import com.sparta.backend.domain.user.Role;
 import com.sparta.backend.domain.user.User;
+import com.sparta.backend.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,11 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class MenuService {
     private final MenuRepository menuRepository;
     private final StoreRepository storeRepository;
+    private final UserRepository userRepository;
 
     @Transactional
-    public CreateResponse createMenu(Long storeId, CreateRequest request, User user) {
+    public CreateResponse createMenu(Long storeId, CreateRequest request, Long id) {
        Store store = storeRepository.findByIdAndStatus(storeId, StoreStatus.ACTIVE).orElseThrow(() ->
                 new IllegalArgumentException("해당 가게를 찾을 수 없습니다."));
+        User user = userRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("해당 유저가 없습니다."));
 
         if (!user.getId().equals(store.getUser().getId())) {
             throw new SecurityException("해당 가게 주인만 메뉴를 생성할 수 있습니다.");

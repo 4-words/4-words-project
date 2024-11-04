@@ -1,5 +1,6 @@
 package com.sparta.backend.controller.menu;
 
+import com.sparta.backend.common.resolver.AuthenticationUserId;
 import com.sparta.backend.controller.menu.dto.CreateRequest;
 import com.sparta.backend.controller.menu.dto.CreateResponse;
 import com.sparta.backend.domain.user.User;
@@ -22,15 +23,11 @@ public class MenuController {
     @PostMapping("/{storeId}")
     public ResponseEntity<CreateResponse> createMenu(@PathVariable Long storeId,
                                                      @RequestBody @Valid CreateRequest response,
-                                                     HttpServletRequest request) {
-        User user = (User) request.getAttribute("user");
-        CreateResponse createResponse = menuService.createMenu(storeId, response, user);
+                                                     @AuthenticationUserId Long id) {
+
+        CreateResponse createResponse = menuService.createMenu(storeId, response, id);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createResponse);
     }
-
-
-
-
 
 }
