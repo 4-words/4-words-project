@@ -8,5 +8,5 @@ import java.util.Optional;
 @Repository
 public interface MenuRepository extends JpaRepository<Menu, Long> {
 
-    Optional<Menu> findByIdAAndStatus(Long menuId, final MenuStatus status);
+    Optional<Menu> findByIdAndStatus(Long menuId, final MenuStatus status);
 }

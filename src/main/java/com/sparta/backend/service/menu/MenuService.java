@@ -21,7 +21,7 @@ public class MenuService {
 
     @Transactional
     public CreateResponse createMenu(Long storeId, CreateRequest request, User user) {
-       Store store = storeRepository.findByIdAAndStatus(storeId, StoreStatus.ACTIVE).orElseThrow(() ->
+       Store store = storeRepository.findByIdAndStatus(storeId, StoreStatus.ACTIVE).orElseThrow(() ->
                 new IllegalArgumentException("해당 가게를 찾을 수 없습니다."));
 
         if (!user.getId().equals(store.getUser().getId())) {

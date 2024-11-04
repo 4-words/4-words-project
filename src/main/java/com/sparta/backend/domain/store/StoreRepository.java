@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface StoreRepository extends JpaRepository<Store, Long> {
-    Optional<Store> findByIdAAndStatus(Long storeId, final StoreStatus status);
+    Optional<Store> findByIdAndStatus(Long storeId, final StoreStatus status);
 }
