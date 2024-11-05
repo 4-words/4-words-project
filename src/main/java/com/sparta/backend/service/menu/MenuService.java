@@ -1,19 +1,21 @@
 package com.sparta.backend.service.menu;
 
+import com.sparta.backend.common.ApplicationException;
 import com.sparta.backend.controller.menu.dto.CreateRequest;
 import com.sparta.backend.controller.menu.dto.CreateResponse;
-import com.sparta.backend.controller.menu.dto.UpdateRequest;
-import com.sparta.backend.controller.menu.dto.UpdateResponse;
 import com.sparta.backend.domain.menu.Menu;
 import com.sparta.backend.domain.menu.MenuRepository;
-import com.sparta.backend.domain.menu.MenuStatus;
 import com.sparta.backend.domain.store.Store;
 import com.sparta.backend.domain.store.StoreRepository;
 import com.sparta.backend.domain.store.StoreStatus;
-import com.sparta.backend.domain.user.Role;
 import com.sparta.backend.domain.user.User;
+import com.sparta.backend.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import static com.sparta.backend.common.ErrorCodes.*;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
