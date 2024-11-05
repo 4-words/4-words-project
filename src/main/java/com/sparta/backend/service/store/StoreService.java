@@ -1,5 +1,6 @@
 package com.sparta.backend.service.store;
 
+import static com.sparta.backend.common.ErrorCodes.STORE_NOT_FOUND;
 import static com.sparta.backend.common.ErrorCodes.USER_NOT_FOUND;
 
 import com.sparta.backend.client.S3FileUploader;
@@ -7,17 +8,20 @@ import com.sparta.backend.common.ApplicationException;
 import com.sparta.backend.controller.menu.dto.MenuRetrieveResponse;
 import com.sparta.backend.controller.store.dto.StoreCreateRequest;
 import com.sparta.backend.controller.store.dto.StoreRetrieveResponse;
+import com.sparta.backend.controller.store.dto.StoreUpdateRequest;
 import com.sparta.backend.domain.menu.Menu;
 import com.sparta.backend.domain.menu.MenuRepository;
 import com.sparta.backend.domain.menu.MenuStatus;
 import com.sparta.backend.domain.store.Store;
 import com.sparta.backend.domain.store.StoreRepository;
+import com.sparta.backend.domain.store.StoreStatus;
 import com.sparta.backend.domain.user.User;
 import com.sparta.backend.domain.user.UserRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -40,7 +44,8 @@ public class StoreService {
     }
 
     public StoreRetrieveResponse retrieve(final Long storeId) {
-        final Store store = storeRepository.findById(storeId).orElseThrow();
+        final Store store = storeRepository.findByIdAndStatus(storeId, StoreStatus.ACTIVE)
+                .orElseThrow(() -> new ApplicationException(STORE_NOT_FOUND, HttpStatus.NOT_FOUND));
         final List<Menu> menus = menuRepository.findByStoreIdAndStatus(storeId, MenuStatus.ACTIVE);
 
         final List<MenuRetrieveResponse> menuResponses = menus.stream()
@@ -48,5 +53,18 @@ public class StoreService {
                 .toList();
 
         return StoreRetrieveResponse.of(store, menuResponses);
+    }
+
+    @Transactional
+    public void update(final Long loginId, final Long storeId, final StoreUpdateRequest req, final MultipartFile image) {
+        final Store store = storeRepository.findByIdAndStatus(storeId, StoreStatus.ACTIVE)
+                .orElseThrow(() -> new ApplicationException(STORE_NOT_FOUND, HttpStatus.NOT_FOUND));
+
+        if (!store.isOwner(loginId)) {
+            throw new ApplicationException(STORE_NOT_FOUND, HttpStatus.FORBIDDEN);
+        }
+        final String imageUrl = fileUploader.uploadFiles(image);
+        store.update(req.name(), req.category(), imageUrl, req.introduce(), req.address(), req.openedAt(),
+                req.closedAt(), req.minOrderPrice());
     }
 }
