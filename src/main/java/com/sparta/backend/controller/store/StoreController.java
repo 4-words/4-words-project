@@ -5,6 +5,7 @@ import com.sparta.backend.controller.store.dto.StoreCreateRequest;
 import com.sparta.backend.controller.store.dto.StoreRetrieveResponse;
 import com.sparta.backend.domain.store.dto.StoreRetrieveResponseByCategory;
 import com.sparta.backend.controller.store.dto.StoreUpdateRequest;
+import com.sparta.backend.domain.store.dto.StoreRetrieveSortResponse;
 import com.sparta.backend.service.store.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -54,13 +55,23 @@ public class StoreController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping
+    @GetMapping("/category")
     public ResponseEntity<Page<StoreRetrieveResponseByCategory>> retrieveByCategory(
             @RequestParam(name = "type") final String type,
             @RequestParam(defaultValue = "1", value = "page") int page,
             @RequestParam(defaultValue = "10", value = "limit") int limit
     ) {
         final Page<StoreRetrieveResponseByCategory> resp = storeService.retrieveByCategory(type, page, limit);
+        return ResponseEntity.status(HttpStatus.OK).body(resp);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<StoreRetrieveSortResponse>> retrieveByReviewCount(
+            @RequestParam(name = "orderBy") final String orderBy,
+            @RequestParam(defaultValue = "1", value = "page") int page,
+            @RequestParam(defaultValue = "10", value = "limit") int limit
+    ) {
+        final Page<StoreRetrieveSortResponse> resp = storeService.retrieveBySort(orderBy, page, limit);
         return ResponseEntity.status(HttpStatus.OK).body(resp);
     }
 }
