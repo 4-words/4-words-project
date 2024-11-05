@@ -56,8 +56,6 @@ public class OrderService {
     }
 
     public List<RetrieveOrderListResponse> retrieveOrder(Long id) {
-//        User user = userRepository.findById(id)
-//                .orElseThrow(()-> new ApplicationException(USER_NOT_FOUND, HttpStatus.NOT_FOUND));
         List<RetrieveOrderListResponse> orders = orderRepository.findByUserIdAndStatus(id,OrderStatus.COMPLETE).stream()
                 .map(RetrieveOrderListResponse::new).toList();
         return orders;
