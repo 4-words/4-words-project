@@ -43,4 +43,10 @@ public class OrderController {
         List<RetrieveOrderStatusResponse> orders = orderService.retrieveOrderStatus(id);
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
+
+    @PutMapping("/{orderId}/accept")
+    public ResponseEntity<String> acceptOrder(@PathVariable Long orderId, @AuthenticationUserId Long id) {
+        orderService.acceptOrder(orderId, id);
+        return new ResponseEntity<>("주문수락", HttpStatus.OK);
+    }
 }

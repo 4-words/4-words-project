@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -65,5 +65,31 @@ public class OrderService {
         List<RetrieveOrderStatusResponse> orders = orderRepository.findByUserId(id).stream()
                 .map(RetrieveOrderStatusResponse::new).toList();
         return orders;
+    }
+
+    @Transactional
+    public void acceptOrder(Long orderId, Long id) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ApplicationException(ORDER_NOT_FOUND, HttpStatus.NOT_FOUND));
+        User user = userRepository.findById(id)
+                .orElseThrow(()-> new ApplicationException(USER_NOT_FOUND, HttpStatus.NOT_FOUND));
+        Long ownerId = order.getStore().getId();
+        if(!user.getId().equals(ownerId)) {
+            throw new ApplicationException(STORE_NOT_OWNER, HttpStatus.FORBIDDEN);
+        }
+
+        OrderStatus currentStatus = order.getStatus();
+
+        if (currentStatus.equals(OrderStatus.WAITING)) {
+            order.updateStatus(OrderStatus.COOKING);
+            orderRepository.save(order);
+        } else if (currentStatus.equals(OrderStatus.COOKING)) {
+            order.updateStatus(OrderStatus.DELIVERING);
+            orderRepository.save(order);
+        } else if (currentStatus.equals(OrderStatus.DELIVERING)) {
+            order.updateStatus(OrderStatus.COMPLETE);
+            orderRepository.save(order);
+        }
+        throw new ApplicationException(INVALID_STATUS, HttpStatus.BAD_REQUEST);
     }
 }
