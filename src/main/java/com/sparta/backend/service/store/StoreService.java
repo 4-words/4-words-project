@@ -12,10 +12,13 @@ import com.sparta.backend.domain.menu.MenuRepository;
 import com.sparta.backend.domain.menu.MenuStatus;
 import com.sparta.backend.domain.store.Store;
 import com.sparta.backend.domain.store.StoreRepository;
+import com.sparta.backend.domain.store.dto.StoreRetrieveResponseByCategory;
 import com.sparta.backend.domain.user.User;
 import com.sparta.backend.domain.user.UserRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,5 +51,14 @@ public class StoreService {
                 .toList();
 
         return StoreRetrieveResponse.of(store, menuResponses);
+    }
+
+    public Page<StoreRetrieveResponseByCategory> retrieveByCategory(
+            final String type,
+            final int page,
+            final int limit
+    ) {
+        return storeRepository.retrieveByCategory(type,
+                PageRequest.of(page, limit));
     }
 }
