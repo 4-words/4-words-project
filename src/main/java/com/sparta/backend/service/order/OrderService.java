@@ -3,6 +3,8 @@ package com.sparta.backend.service.order;
 import com.sparta.backend.common.ApplicationException;
 import com.sparta.backend.controller.order.dto.CreateOrderRequest;
 import com.sparta.backend.controller.order.dto.CreateOrderResponse;
+import com.sparta.backend.controller.order.dto.RetrieveOrderListResponse;
+import com.sparta.backend.controller.order.dto.RetrieveOrderStatusResponse;
 import com.sparta.backend.domain.menu.Menu;
 import com.sparta.backend.domain.menu.MenuRepository;
 import com.sparta.backend.domain.order.Order;
@@ -16,8 +18,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.sparta.backend.common.ErrorCodes.*;
 
@@ -48,5 +52,19 @@ public class OrderService {
         Order order = new Order(user,store,menu, request.getType(), request.getTotalPrice(), OrderStatus.WAITING);
         Order savedOrder = orderRepository.save(order);
         return new CreateOrderResponse(savedOrder);
+    }
+
+    public List<RetrieveOrderListResponse> retrieveOrder(Long id) {
+        List<Order> orders = orderRepository.findAll();
+        return orders.stream()
+                .map(RetrieveOrderListResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<RetrieveOrderStatusResponse> retrieveOrderStatus(Long id) {
+        List<Order> orders = orderRepository.findAll();
+        return orders.stream()
+                .map(RetrieveOrderStatusResponse::new)
+                .collect(Collectors.toList());
     }
 }
