@@ -5,6 +5,7 @@ import com.sparta.backend.controller.menu.dto.CreateRequest;
 import com.sparta.backend.controller.menu.dto.CreateResponse;
 import com.sparta.backend.domain.menu.Menu;
 import com.sparta.backend.domain.menu.MenuRepository;
+import com.sparta.backend.domain.menu.MenuStatus;
 import com.sparta.backend.domain.store.Store;
 import com.sparta.backend.domain.store.StoreRepository;
 import com.sparta.backend.domain.store.StoreStatus;
@@ -35,7 +36,7 @@ public class MenuService {
             throw new ApplicationException(STORE_NOT_OWNER, HttpStatus.UNAUTHORIZED);
         }
 
-        Menu menu = new Menu(store, request);
+        Menu menu = new Menu(store, request, MenuStatus.ACTIVE);
         menuRepository.save(menu);
 
         return new CreateResponse(menu);

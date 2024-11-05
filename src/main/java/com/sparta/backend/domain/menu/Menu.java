@@ -37,10 +37,11 @@ public class Menu extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private MenuStatus status;
 
-    public Menu(Store store, CreateRequest request) {
+    public Menu(Store store, CreateRequest request, MenuStatus status) {
         this.store = store;
         this.name = request.getName();
         this.price = request.getPrice();
+        this.status = status;
     }
 }
 
