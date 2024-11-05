@@ -5,6 +5,7 @@ import static com.sparta.backend.common.ErrorCodes.USER_NOT_FOUND;
 import com.sparta.backend.client.S3FileUploader;
 import com.sparta.backend.common.ApplicationException;
 import com.sparta.backend.common.ErrorCodes;
+import com.sparta.backend.controller.user.dto.ProfileResponseDto;
 import com.sparta.backend.controller.user.dto.UserUpdateRequest;
 import com.sparta.backend.domain.user.User;
 import com.sparta.backend.domain.user.UserRepository;
@@ -44,5 +45,12 @@ public class UserService {
         }
 
         user.updateProfile(req.name(), req.password(), req.email(), req.address(), req.role());
+    }
+
+    public ProfileResponseDto getProfile(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ApplicationException(USER_NOT_FOUND, HttpStatus.NOT_FOUND));
+        ProfileResponseDto profileResponseDto = new ProfileResponseDto(user);
+        return profileResponseDto;
     }
 }

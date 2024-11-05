@@ -4,12 +4,14 @@ import com.sparta.backend.client.S3FileUploader;
 import com.sparta.backend.common.ApplicationException;
 import com.sparta.backend.controller.menu.dto.CreateRequest;
 import com.sparta.backend.controller.menu.dto.CreateResponse;
+import com.sparta.backend.controller.menu.dto.UpdateRequest;
+import com.sparta.backend.controller.menu.dto.UpdateResponse;
 import com.sparta.backend.domain.menu.Menu;
 import com.sparta.backend.domain.menu.MenuRepository;
+import com.sparta.backend.domain.menu.MenuStatus;
 import com.sparta.backend.domain.store.Store;
 import com.sparta.backend.domain.store.StoreRepository;
 import com.sparta.backend.domain.store.StoreStatus;
-import com.sparta.backend.domain.user.User;
 import com.sparta.backend.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,8 +33,6 @@ public class MenuService {
     public CreateResponse createMenu(Long storeId, MultipartFile image, CreateRequest request, Long id) {
         Store store = storeRepository.findByIdAndStatus(storeId, StoreStatus.ACTIVE)
                 .orElseThrow(() -> new ApplicationException(STORE_NOT_FOUND, HttpStatus.NOT_FOUND));
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new ApplicationException(USER_NOT_FOUND, HttpStatus.NOT_FOUND));
 
         if (!store.isOwner(id)) {
             throw new ApplicationException(STORE_NOT_OWNER, HttpStatus.UNAUTHORIZED);
@@ -43,5 +43,41 @@ public class MenuService {
         menuRepository.save(menu);
 
         return new CreateResponse(menu);
+    }
+
+    @Transactional
+    public UpdateResponse updateMenu(Long storeId, Long menuId, UpdateRequest updateRequest, Long id) {
+        Store store = storeRepository.findByIdAndStatus(storeId, StoreStatus.ACTIVE)
+                .orElseThrow(() -> new ApplicationException(STORE_NOT_FOUND, HttpStatus.NOT_FOUND));
+
+        Menu menu = menuRepository.findByIdAndStatus(menuId, MenuStatus.ACTIVE)
+                .orElseThrow(() -> new ApplicationException(MENU_NOT_FOUND, HttpStatus.NOT_FOUND));
+
+        if (!store.isOwner(id)) {
+            throw new ApplicationException(STORE_NOT_OWNER, HttpStatus.UNAUTHORIZED);
+        }
+
+        String name = updateRequest.getName();
+        Integer price = updateRequest.getPrice();
+        menu.updated(name, price);
+        menuRepository.saveAndFlush(menu);
+
+        return new UpdateResponse(menu);
+    }
+
+    @Transactional
+    public void deleteMenu(Long storeId, Long menuId, Long id) {
+        Store store = storeRepository.findByIdAndStatus(storeId, StoreStatus.ACTIVE)
+                .orElseThrow(() -> new ApplicationException(STORE_NOT_FOUND, HttpStatus.NOT_FOUND));
+
+        Menu menu = menuRepository.findByIdAndStatus(menuId, MenuStatus.ACTIVE)
+                .orElseThrow(() -> new ApplicationException(MENU_NOT_FOUND, HttpStatus.NOT_FOUND));
+
+        if (!store.isOwner(id)) {
+            throw new ApplicationException(STORE_NOT_OWNER, HttpStatus.UNAUTHORIZED);
+        }
+
+        menu.delete(MenuStatus.INACTIVE);
+        menuRepository.saveAndFlush(menu);
     }
 }
