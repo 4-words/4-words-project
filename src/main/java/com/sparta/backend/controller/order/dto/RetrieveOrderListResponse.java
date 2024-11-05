@@ -1,22 +1,26 @@
 package com.sparta.backend.controller.order.dto;
 
 import com.sparta.backend.domain.order.Order;
+import com.sparta.backend.domain.order.OrderStatus;
 import com.sparta.backend.domain.order.OrderType;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
-
+@Getter
 public class RetrieveOrderListResponse {
     private Long orderId;
-    private LocalDateTime orderTime; // 조회 시 사용될 주문 시각
     private OrderType orderType;
+    private OrderStatus status;
+    private String storeName;
     private String menuImage;
     private String menuName;
     private int totalPrice;
-    private String storeName;
+    private LocalDateTime orderTime;
 
     public RetrieveOrderListResponse(Order order) {
         this.orderId = order.getId();
         this.orderType = order.getType();
+        this.status = order.getStatus();
         this.storeName = order.getStore().getName();
         this.menuImage = order.getMenu().getImage();
         this.menuName = order.getMenu().getName();
