@@ -16,11 +16,10 @@ import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
+@Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "stores")
-@Getter
 public class Store extends BaseEntity {
 
     @Id
@@ -50,6 +49,7 @@ public class Store extends BaseEntity {
 
     private Double starRating;
 
+    @Enumerated(EnumType.STRING)
     private StoreStatus status;
 
     public Store(final User user,
@@ -88,5 +88,29 @@ public class Store extends BaseEntity {
     ) {
         return new Store(user, name, Category.from(category), image, introduce, address, openedAt, closedAt,
                 minOrderPrice, StoreStatus.ACTIVE);
+    }
+
+    public boolean isOwner(final Long loginId) {
+        return this.user.getId().equals(loginId);
+    }
+
+    public void update(
+            final String name,
+            final String category,
+            final String image,
+            final String introduce,
+            final String address,
+            final LocalDateTime openedAt,
+            final LocalDateTime closedAt,
+            final Integer minOrderPrice
+    ) {
+        this.name = name;
+        this.category = Category.from(category);
+        this.image = image;
+        this.introduce = introduce;
+        this.address = address;
+        this.openedAt = openedAt;
+        this.closedAt = closedAt;
+        this.minOrderPrice = minOrderPrice;
     }
 }
