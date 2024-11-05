@@ -30,10 +30,10 @@ public class OrderService {
     private final MenuRepository menuRepository;
     private final UserRepository userRepository;
 
-    public CreateOrderResponse createOrder(CreateOrderRequest request, Long id) {
-        Store store = storeRepository.findById(request.getStoreId())
+    public CreateOrderResponse createOrder(Long storeId, Long menuId,CreateOrderRequest request, Long id) {
+        Store store = storeRepository.findById(storeId)
                 .orElseThrow(()-> new ApplicationException(STORE_NOT_FOUND, HttpStatus.NOT_FOUND));
-        Menu menu = menuRepository.findById(request.getMenuId())
+        Menu menu = menuRepository.findById(menuId)
                 .orElseThrow(()-> new ApplicationException(MENU_NOT_FOUND, HttpStatus.NOT_FOUND));
         User user = userRepository.findById(id)
                 .orElseThrow(()-> new ApplicationException(USER_NOT_FOUND, HttpStatus.NOT_FOUND));
