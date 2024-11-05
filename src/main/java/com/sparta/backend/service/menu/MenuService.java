@@ -1,5 +1,9 @@
 package com.sparta.backend.service.menu;
 
+import static com.sparta.backend.common.ErrorCodes.MENU_NOT_FOUND;
+import static com.sparta.backend.common.ErrorCodes.STORE_NOT_FOUND;
+import static com.sparta.backend.common.ErrorCodes.STORE_NOT_OWNER;
+
 import com.sparta.backend.client.S3FileUploader;
 import com.sparta.backend.common.ApplicationException;
 import com.sparta.backend.controller.menu.dto.CreateRequest;
@@ -12,21 +16,17 @@ import com.sparta.backend.domain.menu.MenuStatus;
 import com.sparta.backend.domain.store.Store;
 import com.sparta.backend.domain.store.StoreRepository;
 import com.sparta.backend.domain.store.StoreStatus;
-import com.sparta.backend.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import static com.sparta.backend.common.ErrorCodes.*;
-
 @Service
 @RequiredArgsConstructor
 public class MenuService {
     private final MenuRepository menuRepository;
     private final StoreRepository storeRepository;
-    private final UserRepository userRepository;
     private final S3FileUploader fileUploader;
 
     @Transactional

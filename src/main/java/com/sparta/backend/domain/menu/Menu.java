@@ -42,7 +42,7 @@ public class Menu extends BaseEntity {
         this.name = request.getName();
         this.price = request.getPrice();
         this.image = menuImg;
-        this.status = status;
+        this.status = MenuStatus.ACTIVE;
     }
 
     public void updated(String name, Integer price) {
