@@ -11,8 +11,7 @@ public enum ErrorCodes {
     TOKEN_NULL_EXCEPTION("토큰이 존재하지 않습니다.", 3001L),
     TOKEN_EXPIRED("토큰이 만료되었습니다.",3002L),
 
-    NOT_USER_FOUND("해당 유저를 찾을 수 없습니다.", 5001L),
-    NOT_STORE_OWNER("해당 가게 주인이 아닙니다.", 5002L),
+    STORE_NOT_OWNER("해당 가게 주인이 아닙니다.", 5002L),
     NOT_OWNER("사장만 가능할 수 있습니다", 5003L),
 
     BAD_REQUEST("BAD_REQUEST", 9404L),
