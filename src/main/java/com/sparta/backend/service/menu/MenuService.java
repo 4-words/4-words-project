@@ -1,5 +1,7 @@
 package com.sparta.backend.service.menu;
 
+import com.sparta.backend.common.ApplicationException;
+import com.sparta.backend.common.ErrorCodes;
 import com.sparta.backend.controller.menu.dto.CreateRequest;
 import com.sparta.backend.controller.menu.dto.CreateResponse;
 import com.sparta.backend.domain.menu.Menu;
@@ -11,8 +13,11 @@ import com.sparta.backend.domain.user.Role;
 import com.sparta.backend.domain.user.User;
 import com.sparta.backend.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.sparta.backend.common.ErrorCodes.*;
 
 @Service
 @RequiredArgsConstructor
@@ -23,23 +28,23 @@ public class MenuService {
 
     @Transactional
     public CreateResponse createMenu(Long storeId, CreateRequest request, Long id) {
-       Store store = storeRepository.findByIdAndStatus(storeId, StoreStatus.ACTIVE).orElseThrow(() ->
-                new IllegalArgumentException("해당 가게를 찾을 수 없습니다."));
-        User user = userRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("해당 유저가 없습니다."));
+        Store store = storeRepository.findByIdAndStatus(storeId, StoreStatus.ACTIVE)
+                .orElseThrow(() -> new ApplicationException(NOT_USER_FOUND, HttpStatus.NOT_FOUND));
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ApplicationException(NOT_STORE_OWNER, HttpStatus.NOT_FOUND));
 
         if (!user.getId().equals(store.getUser().getId())) {
-            throw new SecurityException("해당 가게 주인만 메뉴를 생성할 수 있습니다.");
+            throw new ApplicationException(NOT_STORE_OWNER, HttpStatus.UNAUTHORIZED);
         }
 
         if (!user.getRole().equals(Role.OWNER)) {
-            throw new SecurityException("해당 권한이 없습니다.");
+            throw new ApplicationException(NOT_OWNER, HttpStatus.UNAUTHORIZED);
         }
 
         Menu menu = new Menu(request);
         menuRepository.save(menu);
 
         return new CreateResponse(menu);
-        }
+    }
 
 }
