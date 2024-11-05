@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Getter
 public class CreateResponse {
     private Long id;
-    private String storeId;
+    private Long storeId;
     private String name;
     private Integer price;
     private LocalDateTime createdAt;
@@ -16,7 +16,7 @@ public class CreateResponse {
 
     public CreateResponse(Menu menu) {
         this.id = menu.getId();
-        this.storeId = String.valueOf(menu.getStore().getId());
+        this.storeId = menu.getStore().getId();
         this.name = menu.getName();
         this.price = menu.getPrice();
         this.createdAt = menu.getCreatedAt();

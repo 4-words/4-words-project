@@ -40,7 +40,8 @@ public class Menu extends BaseEntity {
 
 
 
-    public Menu(CreateRequest request) {
+    public Menu(Store store, CreateRequest request) {
+        this.store = store;
         this.name = request.getName();
         this.price = request.getPrice();
 

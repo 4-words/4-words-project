@@ -29,19 +29,15 @@ public class MenuService {
     @Transactional
     public CreateResponse createMenu(Long storeId, CreateRequest request, Long id) {
         Store store = storeRepository.findByIdAndStatus(storeId, StoreStatus.ACTIVE)
-                .orElseThrow(() -> new ApplicationException(NOT_USER_FOUND, HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ApplicationException(STORE_NOT_FOUND, HttpStatus.NOT_FOUND));
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new ApplicationException(NOT_STORE_OWNER, HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ApplicationException(USER_NOT_FOUND, HttpStatus.NOT_FOUND));
 
         if (!user.getId().equals(store.getUser().getId())) {
-            throw new ApplicationException(NOT_STORE_OWNER, HttpStatus.UNAUTHORIZED);
+            throw new ApplicationException(STORE_NOT_OWNER, HttpStatus.UNAUTHORIZED);
         }
 
-        if (!user.getRole().equals(Role.OWNER)) {
-            throw new ApplicationException(NOT_OWNER, HttpStatus.UNAUTHORIZED);
-        }
-
-        Menu menu = new Menu(request);
+        Menu menu = new Menu(store, request);
         menuRepository.save(menu);
 
         return new CreateResponse(menu);

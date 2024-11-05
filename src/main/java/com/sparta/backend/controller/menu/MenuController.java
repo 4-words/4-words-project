@@ -10,22 +10,20 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("stores/{storeId}/menu")
 public class MenuController {
     private final MenuService menuService;
 
-    @PostMapping("/{storeId}")
+    @PostMapping
     public ResponseEntity<CreateResponse> createMenu(@PathVariable Long storeId,
-                                                     @RequestBody @Valid CreateRequest response,
+                                                     @RequestBody @Valid CreateRequest request,
                                                      @AuthenticationUserId Long id) {
 
-        CreateResponse createResponse = menuService.createMenu(storeId, response, id);
+        CreateResponse createResponse = menuService.createMenu(storeId, request, id);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createResponse);
     }
