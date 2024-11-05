@@ -87,7 +87,8 @@ public class OrderService {
         } else if (currentStatus.equals(OrderStatus.DELIVERING)) {
             order.updateStatus(OrderStatus.COMPLETE);
             orderRepository.save(order);
+        } else {
+            throw new ApplicationException(INVALID_STATUS, HttpStatus.BAD_REQUEST);
         }
-        throw new ApplicationException(INVALID_STATUS, HttpStatus.BAD_REQUEST);
     }
 }
