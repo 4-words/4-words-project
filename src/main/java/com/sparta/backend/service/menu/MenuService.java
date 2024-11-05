@@ -3,61 +3,53 @@ package com.sparta.backend.service.menu;
 import com.sparta.backend.common.ApplicationException;
 import com.sparta.backend.controller.menu.dto.CreateRequest;
 import com.sparta.backend.controller.menu.dto.CreateResponse;
+import com.sparta.backend.controller.menu.dto.UpdateRequest;
+import com.sparta.backend.controller.menu.dto.UpdateResponse;
 import com.sparta.backend.domain.menu.Menu;
 import com.sparta.backend.domain.menu.MenuRepository;
+import com.sparta.backend.domain.menu.MenuStatus;
 import com.sparta.backend.domain.store.Store;
 import com.sparta.backend.domain.store.StoreRepository;
 import com.sparta.backend.domain.store.StoreStatus;
-import com.sparta.backend.domain.user.User;
 import com.sparta.backend.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import static com.sparta.backend.common.ErrorCodes.*;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class MenuService {
     private final MenuRepository menuRepository;
     private final StoreRepository storeRepository;
+    private final UserRepository userRepository;
 
     @Transactional
-    public CreateResponse createMenu(Long storeId, CreateRequest request, User user) {
-        Store store = storeRepository.findByIdAAndStatus(storeId, StoreStatus.ACTIVE).orElseThrow(() ->
-                new IllegalArgumentException("해당 가게를 찾을 수 없습니다."));
+    public CreateResponse createMenu(Long storeId, CreateRequest request, Long id) {
+        Store store = storeRepository.findByIdAndStatus(storeId, StoreStatus.ACTIVE)
+                .orElseThrow(() -> new ApplicationException(STORE_NOT_FOUND, HttpStatus.NOT_FOUND));
 
-        if (!user.getId().equals(store.getUser().getId())) {
-            throw new SecurityException("해당 가게 주인만 메뉴를 생성할 수 있습니다.");
+        if (!store.isOwner(id)) {
+            throw new ApplicationException(STORE_NOT_OWNER, HttpStatus.UNAUTHORIZED);
         }
 
-        if (!user.getRole().equals(Role.OWNER)) {
-            throw new SecurityException("해당 권한이 없습니다.");
-        }
-
-        Menu menu = new Menu(request);
+        Menu menu = new Menu(store, request);
         menuRepository.save(menu);
 
         return new CreateResponse(menu);
     }
 
-
     @Transactional
-    public UpdateResponse updateMenu(Long storeId, Long menuId, UpdateRequest updateRequest, User user) {
-        Store store = storeRepository.findByIdAAndStatus(storeId, StoreStatus.ACTIVE).orElseThrow(() ->
-                new IllegalArgumentException("해당 가게를 찾을 수 없습니다."));
+    public UpdateResponse updateMenu(Long storeId, Long menuId, UpdateRequest updateRequest, Long id) {
+        Store store = storeRepository.findByIdAndStatus(storeId, StoreStatus.ACTIVE)
+                .orElseThrow(() -> new ApplicationException(STORE_NOT_FOUND, HttpStatus.NOT_FOUND));
 
-        Menu menu = menuRepository.findByIdAAndStatus(menuId, MenuStatus.ACTIVE).orElseThrow(() ->
-                new IllegalArgumentException("해당 메뉴를 찾을 수 없습니다."));
+        Menu menu = menuRepository.findByIdAndStatus(menuId, MenuStatus.ACTIVE)
+                .orElseThrow(() -> new ApplicationException(MENU_NOT_FOUND, HttpStatus.NOT_FOUND));
 
-        if (!user.getId().equals(store.getUser().getId())) {
-            throw new SecurityException("해당 가게 주인만 메뉴를 수정할 수 있습니다.");
-        }
-
-        if (!user.getRole().equals(Role.OWNER)) {
-            throw new SecurityException("해당 권한이 없습니다.");
+        if (!store.isOwner(id)) {
+            throw new ApplicationException(STORE_NOT_OWNER, HttpStatus.UNAUTHORIZED);
         }
 
         String name = updateRequest.getName();
@@ -69,19 +61,15 @@ public class MenuService {
     }
 
     @Transactional
-    public void deleteMenu(Long storeId, Long menuId, User user) {
-        Store store = storeRepository.findByIdAAndStatus(storeId, StoreStatus.ACTIVE).orElseThrow(() ->
-                new IllegalArgumentException("해당 가게를 찾을 수 없습니다."));
+    public void deleteMenu(Long storeId, Long menuId, Long id) {
+        Store store = storeRepository.findByIdAndStatus(storeId, StoreStatus.ACTIVE)
+                .orElseThrow(() -> new ApplicationException(STORE_NOT_FOUND, HttpStatus.NOT_FOUND));
 
-        Menu menu = menuRepository.findByIdAAndStatus(menuId, MenuStatus.ACTIVE).orElseThrow(() ->
-                new IllegalArgumentException("해당 메뉴를 찾을 수 없습니다."));
+        Menu menu = menuRepository.findByIdAndStatus(menuId, MenuStatus.ACTIVE)
+                .orElseThrow(() -> new ApplicationException(MENU_NOT_FOUND, HttpStatus.NOT_FOUND));
 
-        if (!user.getId().equals(store.getUser().getId())) {
-            throw new SecurityException("해당 가게 주인만 메뉴를 수정할 수 있습니다.");
-        }
-
-        if (!user.getRole().equals(Role.OWNER)) {
-            throw new SecurityException("해당 권한이 없습니다.");
+        if (!store.isOwner(id)) {
+            throw new ApplicationException(STORE_NOT_OWNER, HttpStatus.UNAUTHORIZED);
         }
 
         menu.delete(MenuStatus.INACTIVE);
