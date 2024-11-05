@@ -1,5 +1,6 @@
 package com.sparta.backend.domain.menu;
 
+import com.sparta.backend.controller.menu.dto.CreateRequest;
 import com.sparta.backend.domain.BaseEntity;
 import com.sparta.backend.domain.store.Store;
 import jakarta.persistence.Entity;
@@ -19,7 +20,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Menu extends BaseEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,4 +36,12 @@ public class Menu extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private MenuStatus status;
+
+    public Menu(Store store, CreateRequest request) {
+        this.store = store;
+        this.name = request.getName();
+        this.price = request.getPrice();
+    }
 }
+
+
