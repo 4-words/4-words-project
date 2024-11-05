@@ -34,7 +34,7 @@ public class MenuService {
             throw new ApplicationException(STORE_NOT_OWNER, HttpStatus.UNAUTHORIZED);
         }
 
-        Menu menu = new Menu(store, request);
+        Menu menu = new Menu(store, request, MenuStatus.ACTIVE);
         menuRepository.save(menu);
 
         return new CreateResponse(menu);
