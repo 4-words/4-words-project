@@ -42,17 +42,6 @@ public class Menu extends BaseEntity {
         this.name = request.getName();
         this.price = request.getPrice();
     }
-}
-
-
-
-
-
-    public Menu(CreateRequest request) {
-        this.name = request.getName();
-        this.price = request.getPrice();
-
-    }
 
     public void updated(String name, Integer price) {
         this.name = name;
