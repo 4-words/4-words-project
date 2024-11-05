@@ -19,7 +19,10 @@ public enum ErrorCodes {
     // Runtime Exception
     INTERNAL_SERVER_ERROR("INTERNAL_SERVER_ERROR", 9999L),
     STORE_CLOSED("영업 시간이 아닙니다.",4001L),
-    MIN_ORDER_PRICE_NOT_MET("최소 주문 금액을 충족하지 않습니다.", 4002L);
+    MIN_ORDER_PRICE_NOT_MET("최소 주문 금액을 충족하지 않습니다.", 4002L),
+    STORE_NOT_FOUND("가게가 존재하지 않습니다.", 4003L),
+    STORE_NOT_OWNER("가게의 사장이 아닙니다.", 4004L);
+
 
     public final @NotNull String message;
     public final @NotNull Long code;
