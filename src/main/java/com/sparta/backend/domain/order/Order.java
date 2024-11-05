@@ -15,8 +15,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.aspectj.weaver.ast.Or;
 
 @Entity
 @Getter
@@ -47,4 +49,13 @@ public class Order extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
+
+    public Order(User user, Store store, Menu menu, OrderType type, Integer totalPrice, OrderStatus status) {
+        this.user = user;
+        this.store = store;
+        this.menu = menu;
+        this.type = type;
+        this.totalPrice = totalPrice;
+        this.status = status;
+    }
 }

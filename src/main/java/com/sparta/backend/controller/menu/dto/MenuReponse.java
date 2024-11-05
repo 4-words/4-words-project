@@ -7,5 +7,4 @@ public class MenuReponse {
     private Long id;
     private String name;
     private Number price;
-
 }

@@ -20,7 +20,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Menu extends BaseEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,6 +36,15 @@ public class Menu extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private MenuStatus status;
+
+    public Menu(Store store, CreateRequest request) {
+        this.store = store;
+        this.name = request.getName();
+        this.price = request.getPrice();
+    }
+}
+
+
 
 
 
