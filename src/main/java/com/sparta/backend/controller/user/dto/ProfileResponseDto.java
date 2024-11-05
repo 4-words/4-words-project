@@ -2,10 +2,8 @@ package com.sparta.backend.controller.user.dto;
 
 import com.sparta.backend.domain.user.User;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 public class ProfileResponseDto {
 
     private String email;
