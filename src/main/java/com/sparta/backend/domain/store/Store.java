@@ -113,4 +113,8 @@ public class Store extends BaseEntity {
         this.closedAt = closedAt;
         this.minOrderPrice = minOrderPrice;
     }
+
+    public void changeStatus(){
+        this.status = StoreStatus.INACTIVE;
+    }
 }
