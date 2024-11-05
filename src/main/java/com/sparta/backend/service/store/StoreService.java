@@ -15,13 +15,15 @@ import com.sparta.backend.domain.menu.MenuStatus;
 import com.sparta.backend.domain.store.Store;
 import com.sparta.backend.domain.store.StoreRepository;
 import com.sparta.backend.domain.store.StoreStatus;
+import com.sparta.backend.domain.store.dto.StoreRetrieveResponseByCategory;
 import com.sparta.backend.domain.user.User;
 import com.sparta.backend.domain.user.UserRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -66,5 +68,14 @@ public class StoreService {
         final String imageUrl = fileUploader.uploadFiles(image);
         store.update(req.name(), req.category(), imageUrl, req.introduce(), req.address(), req.openedAt(),
                 req.closedAt(), req.minOrderPrice());
+    }
+
+    public Page<StoreRetrieveResponseByCategory> retrieveByCategory(
+            final String type,
+            final int page,
+            final int limit
+    ) {
+        return storeRepository.retrieveByCategory(type,
+                PageRequest.of(page, limit));
     }
 }

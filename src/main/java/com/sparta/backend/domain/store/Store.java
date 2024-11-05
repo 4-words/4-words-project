@@ -50,6 +50,7 @@ public class Store extends BaseEntity {
 
     private Double starRating;
 
+    @Enumerated(EnumType.STRING)
     private StoreStatus status;
 
     public Store(final User user,
