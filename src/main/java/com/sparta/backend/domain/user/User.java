@@ -12,6 +12,7 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -60,5 +61,19 @@ public class User extends BaseEntity {
 
     public void update(final String image) {
         this.image = image;
+    }
+
+    public void updateProfile(
+            final String name,
+            final String password,
+            final String email,
+            final String address,
+            final String role
+    ) {
+        this.name = name;
+        this.password = password;
+        this.email = email;
+        this.address = address;
+        this.role = Role.from(role);
     }
 }
