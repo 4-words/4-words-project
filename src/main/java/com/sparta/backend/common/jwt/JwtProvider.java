@@ -29,7 +29,7 @@ public class JwtProvider {
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + (30 * 60 * 1000L)))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(SignatureAlgorithm.HS256, secretKey.getEncoded())
                 .compact();
     }
 
@@ -43,7 +43,7 @@ public class JwtProvider {
     public Jws<Claims> getClaims(final String token) {
         try {
             return Jwts.parserBuilder()
-                    .setSigningKey(secretKey)
+                    .setSigningKey(secretKey.getEncoded())
                     .build()
                     .parseClaimsJws(token);
         } catch (Exception e) {
@@ -53,7 +53,7 @@ public class JwtProvider {
 
     public Claims parseToken(final String token) {
         return Jwts.parser()
-                .setSigningKey(secretKey)
+                .setSigningKey(secretKey.getEncoded())
                 .parseClaimsJws(token)
                 .getBody();
     }
@@ -63,7 +63,7 @@ public class JwtProvider {
     }
 
     public Role getUserRole(final String token) {
-        final Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+        final Claims claims = Jwts.parser().setSigningKey(secretKey.getEncoded()).parseClaimsJws(token).getBody();
         return Role.valueOf(claims.get("role").toString());
     }
 }

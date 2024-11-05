@@ -51,4 +51,42 @@ public class Store extends BaseEntity {
     private Double starRating;
 
     private StoreStatus status;
+
+    public Store(final User user,
+                 final String name,
+                 final Category category,
+                 final String image,
+                 final String introduce,
+                 final String address,
+                 final LocalDateTime openedAt,
+                 final LocalDateTime closedAt,
+                 final Integer minOrderPrice,
+                 final StoreStatus status
+    ) {
+        this.user = user;
+        this.name = name;
+        this.category = category;
+        this.image = image;
+        this.introduce = introduce;
+        this.address = address;
+        this.openedAt = openedAt;
+        this.closedAt = closedAt;
+        this.minOrderPrice = minOrderPrice;
+        this.status = status;
+    }
+
+    public static Store of(
+            final User user,
+            final String name,
+            final String category,
+            final String image,
+            final String introduce,
+            final String address,
+            final LocalDateTime openedAt,
+            final LocalDateTime closedAt,
+            final Integer minOrderPrice
+    ) {
+        return new Store(user, name, Category.from(category), image, introduce, address, openedAt, closedAt,
+                minOrderPrice, StoreStatus.ACTIVE);
+    }
 }
