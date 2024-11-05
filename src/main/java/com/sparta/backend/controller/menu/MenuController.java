@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,10 +23,11 @@ public class MenuController {
     @PostMapping
     public ResponseEntity<CreateResponse> createMenu(
             @PathVariable Long storeId,
-            @RequestBody @Valid CreateRequest request,
+            @RequestPart @Valid CreateRequest request,
+            @RequestPart("image") MultipartFile image,
             @AuthenticationUserId Long id
     ) {
-        CreateResponse createResponse = menuService.createMenu(storeId, request, id);
+        CreateResponse createResponse = menuService.createMenu(storeId, request, id, image);
         return ResponseEntity.status(HttpStatus.CREATED).body(createResponse);
     }
 
