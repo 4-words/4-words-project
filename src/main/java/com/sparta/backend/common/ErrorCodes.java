@@ -24,7 +24,11 @@ public enum ErrorCodes {
     MIN_ORDER_PRICE_NOT_MET("최소 주문 금액을 충족하지 않습니다.", 4002L),
     STORE_NOT_FOUND("가게가 존재하지 않습니다.", 4003L),
     STORE_NOT_OWNER("가게의 사장이 아닙니다.", 4004L),
-    MENU_NOT_FOUND("해당 메뉴를 찾을 수 없습니다.", 5001L);
+    MENU_NOT_FOUND("해당 메뉴를 찾을 수 없습니다.", 5001L),
+
+    ORDER_NOT_FOUND("주문이 존재하지 않습니다.", 7001L),
+    INVALID_STATUS("유효하지 않는 상태입니다.", 7002L);
+
 
     public final @NotNull String message;
     public final @NotNull Long code;
