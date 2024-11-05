@@ -46,12 +46,10 @@ public class Menu extends BaseEntity {
     public void updated(String name, Integer price) {
         this.name = name;
         this.price = price;
-
     }
 
     public void delete(MenuStatus menuStatus) {
         this.status = menuStatus;
-
     }
 }
 
