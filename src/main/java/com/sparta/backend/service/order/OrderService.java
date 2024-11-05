@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
-
 import static com.sparta.backend.common.ErrorCodes.*;
 
 @Service
@@ -46,6 +45,7 @@ public class OrderService {
             throw new ApplicationException(MIN_ORDER_PRICE_NOT_MET, HttpStatus.BAD_REQUEST);
         }
         Order order = new Order(user,store,menu, request.getType(), request.getTotalPrice(), OrderStatus.WAITING);
+
         Order savedOrder = orderRepository.save(order);
         return new CreateOrderResponse(savedOrder);
     }
