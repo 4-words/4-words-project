@@ -14,7 +14,6 @@ public class UpdateResponse {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-
     public UpdateResponse(Menu menu) {
         this.id = menu.getId();
         this.storeId = menu.getStore().getId();
@@ -22,6 +21,5 @@ public class UpdateResponse {
         this.price = menu.getPrice();
         this.createdAt = menu.getCreatedAt();
         this.modifiedAt = menu.getModifiedAt();
-
     }
 }

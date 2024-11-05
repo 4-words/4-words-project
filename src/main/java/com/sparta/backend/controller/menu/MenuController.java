@@ -29,7 +29,6 @@ public class MenuController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createResponse);
     }
 
-
     @PutMapping("/{menuId}")
     public ResponseEntity<UpdateResponse> updateMenu(
             @PathVariable Long storeId,
@@ -40,7 +39,6 @@ public class MenuController {
         UpdateResponse response = menuService.updateMenu(storeId, menuId, updateRequest, id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
-
 
     @DeleteMapping("/{menuId}")
     public ResponseEntity<String> deleteMenu(
