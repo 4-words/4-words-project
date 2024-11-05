@@ -6,7 +6,7 @@ public enum ErrorCodes {
 
     INVALID_EMAIL("존재하지 않는 이메일 입니다.", 1001L),
     INVALID_PASSWORD("비밀번호가 유효하지 않습니다.", 1002L),
-
+    USER_NOT_FOUND("유저가 존재하지 않습니다.", 1003L),
     FILE_UPLOAD_FAILED("파일 업로드에 실패하였습니다.", 2001L),
 
     TOKEN_NULL_EXCEPTION("토큰이 존재하지 않습니다.", 3001L),
