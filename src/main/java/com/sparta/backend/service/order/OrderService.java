@@ -15,6 +15,7 @@ import com.sparta.backend.domain.store.StoreRepository;
 import com.sparta.backend.domain.user.User;
 import com.sparta.backend.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -55,16 +56,16 @@ public class OrderService {
     }
 
     public List<RetrieveOrderListResponse> retrieveOrder(Long id) {
-        List<Order> orders = orderRepository.findAll();
-        return orders.stream()
-                .map(RetrieveOrderListResponse::new)
-                .collect(Collectors.toList());
+//        User user = userRepository.findById(id)
+//                .orElseThrow(()-> new ApplicationException(USER_NOT_FOUND, HttpStatus.NOT_FOUND));
+        List<RetrieveOrderListResponse> orders = orderRepository.findByUserIdAndStatus(id,OrderStatus.COMPLETE).stream()
+                .map(RetrieveOrderListResponse::new).toList();
+        return orders;
     }
 
     public List<RetrieveOrderStatusResponse> retrieveOrderStatus(Long id) {
-        List<Order> orders = orderRepository.findAll();
-        return orders.stream()
-                .map(RetrieveOrderStatusResponse::new)
-                .collect(Collectors.toList());
+        List<RetrieveOrderStatusResponse> orders = orderRepository.findByUserId(id).stream()
+                .map(RetrieveOrderStatusResponse::new).toList();
+        return orders;
     }
 }
