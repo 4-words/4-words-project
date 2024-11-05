@@ -15,14 +15,12 @@ import com.sparta.backend.domain.store.StoreRepository;
 import com.sparta.backend.domain.user.User;
 import com.sparta.backend.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.sparta.backend.common.ErrorCodes.*;
 
