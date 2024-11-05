@@ -37,11 +37,12 @@ public class Menu extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private MenuStatus status;
 
-    public Menu(Store store, CreateRequest request, MenuStatus status) {
+    public Menu(Store store, CreateRequest request, String menuImg) {
         this.store = store;
         this.name = request.getName();
         this.price = request.getPrice();
-        this.status = status;
+        this.image = menuImg;
+        this.status = MenuStatus.ACTIVE;
     }
 
     public void updated(String name, Integer price) {
