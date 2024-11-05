@@ -1,6 +1,7 @@
 package com.sparta.backend.controller.user;
 
 import com.sparta.backend.common.resolver.AuthenticationUserId;
+import com.sparta.backend.controller.user.dto.ProfileResponseDto;
 import com.sparta.backend.controller.user.dto.UserUpdateRequest;
 import com.sparta.backend.service.user.UserService;
 import lombok.RequiredArgsConstructor;
