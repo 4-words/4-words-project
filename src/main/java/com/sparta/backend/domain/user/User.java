@@ -53,4 +53,12 @@ public class User extends BaseEntity {
     public boolean isValidPassword(final String password, final PasswordEncoder passwordEncoder) {
         return passwordEncoder.matches(password, this.password);
     }
+
+    public boolean isOwner(final Long loginId) {
+        return this.id.equals(loginId);
+    }
+
+    public void update(final String image) {
+        this.image = image;
+    }
 }
