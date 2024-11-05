@@ -1,5 +1,6 @@
 package com.sparta.backend.service.menu;
 
+import com.sparta.backend.client.S3FileUploader;
 import com.sparta.backend.common.ApplicationException;
 import com.sparta.backend.controller.menu.dto.CreateRequest;
 import com.sparta.backend.controller.menu.dto.CreateResponse;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import static com.sparta.backend.common.ErrorCodes.*;
 
@@ -23,9 +25,10 @@ public class MenuService {
     private final MenuRepository menuRepository;
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
+    private final S3FileUploader fileUploader;
 
     @Transactional
-    public CreateResponse createMenu(Long storeId, CreateRequest request, Long id) {
+    public CreateResponse createMenu(Long storeId, MultipartFile image, CreateRequest request, Long id) {
         Store store = storeRepository.findByIdAndStatus(storeId, StoreStatus.ACTIVE)
                 .orElseThrow(() -> new ApplicationException(STORE_NOT_FOUND, HttpStatus.NOT_FOUND));
         User user = userRepository.findById(id)
@@ -35,7 +38,8 @@ public class MenuService {
             throw new ApplicationException(STORE_NOT_OWNER, HttpStatus.UNAUTHORIZED);
         }
 
-        Menu menu = new Menu(store, request);
+        String menuImg = fileUploader.uploadFiles(image);
+        Menu menu = new Menu(store, request, menuImg);
         menuRepository.save(menu);
 
         return new CreateResponse(menu);
