@@ -16,7 +16,9 @@ public enum ErrorCodes {
     // NPE
     NULL_POINT_EXCEPTION("NPE", 9998L),
     // Runtime Exception
-    INTERNAL_SERVER_ERROR("INTERNAL_SERVER_ERROR", 9999L);
+    INTERNAL_SERVER_ERROR("INTERNAL_SERVER_ERROR", 9999L),
+    STORE_CLOSED("영업 시간이 아닙니다.",4001L),
+    MIN_ORDER_PRICE_NOT_MET("최소 주문 금액을 충족하지 않습니다.", 4002L);
 
     public final @NotNull String message;
     public final @NotNull Long code;
