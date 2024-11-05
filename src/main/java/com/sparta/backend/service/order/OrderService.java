@@ -18,21 +18,26 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
-import static com.sparta.backend.common.ErrorCodes.MIN_ORDER_PRICE_NOT_MET;
-import static com.sparta.backend.common.ErrorCodes.STORE_CLOSED;
+
+import static com.sparta.backend.common.ErrorCodes.*;
 
 @Service
 @RequiredArgsConstructor
 public class OrderService {
+
     private final OrderRepository orderRepository;
     private final StoreRepository storeRepository;
     private final MenuRepository menuRepository;
     private final UserRepository userRepository;
 
     public CreateOrderResponse createOrder(CreateOrderRequest request, Long id) {
-        Store store = storeRepository.findById(request.getStoreId()).orElseThrow();
-        Menu menu = menuRepository.findById(request.getMenuId()).orElseThrow();
-        User user = userRepository.findById(id).orElseThrow();
+        Store store = storeRepository.findById(request.getStoreId())
+                .orElseThrow(()-> new ApplicationException(STORE_NOT_FOUND, HttpStatus.NOT_FOUND));
+        Menu menu = menuRepository.findById(request.getMenuId())
+                .orElseThrow(()-> new ApplicationException(MENU_NOT_FOUND, HttpStatus.NOT_FOUND));
+        User user = userRepository.findById(id)
+                .orElseThrow(()-> new ApplicationException(USER_NOT_FOUND, HttpStatus.NOT_FOUND));
+
         LocalDateTime now = LocalDateTime.now();
         if(now.isBefore(store.getOpenedAt()) || now.isAfter(store.getClosedAt())) {
             throw new ApplicationException(STORE_CLOSED, HttpStatus.FORBIDDEN);
@@ -44,5 +49,4 @@ public class OrderService {
         Order savedOrder = orderRepository.save(order);
         return new CreateOrderResponse(savedOrder);
     }
-
 }
