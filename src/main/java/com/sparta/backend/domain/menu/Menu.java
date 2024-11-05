@@ -41,7 +41,6 @@ public class Menu extends BaseEntity {
         this.store = store;
         this.name = request.getName();
         this.price = request.getPrice();
-
     }
 }
 
