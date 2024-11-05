@@ -3,9 +3,7 @@ package com.sparta.backend.controller.menu;
 import com.sparta.backend.common.resolver.AuthenticationUserId;
 import com.sparta.backend.controller.menu.dto.CreateRequest;
 import com.sparta.backend.controller.menu.dto.CreateResponse;
-import com.sparta.backend.domain.user.User;
 import com.sparta.backend.service.menu.MenuService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,13 +17,12 @@ public class MenuController {
     private final MenuService menuService;
 
     @PostMapping
-    public ResponseEntity<CreateResponse> createMenu(@PathVariable Long storeId,
-                                                     @RequestBody @Valid CreateRequest request,
-                                                     @AuthenticationUserId Long id) {
-
+    public ResponseEntity<CreateResponse> createMenu(
+            @PathVariable Long storeId,
+            @RequestBody @Valid CreateRequest request,
+            @AuthenticationUserId Long id
+    ) {
         CreateResponse createResponse = menuService.createMenu(storeId, request, id);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(createResponse);
     }
-
 }

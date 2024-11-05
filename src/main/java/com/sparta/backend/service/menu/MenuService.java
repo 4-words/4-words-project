@@ -1,7 +1,6 @@
 package com.sparta.backend.service.menu;
 
 import com.sparta.backend.common.ApplicationException;
-import com.sparta.backend.common.ErrorCodes;
 import com.sparta.backend.controller.menu.dto.CreateRequest;
 import com.sparta.backend.controller.menu.dto.CreateResponse;
 import com.sparta.backend.domain.menu.Menu;
@@ -9,7 +8,6 @@ import com.sparta.backend.domain.menu.MenuRepository;
 import com.sparta.backend.domain.store.Store;
 import com.sparta.backend.domain.store.StoreRepository;
 import com.sparta.backend.domain.store.StoreStatus;
-import com.sparta.backend.domain.user.Role;
 import com.sparta.backend.domain.user.User;
 import com.sparta.backend.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +31,7 @@ public class MenuService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ApplicationException(USER_NOT_FOUND, HttpStatus.NOT_FOUND));
 
-        if (!user.getId().equals(store.getUser().getId())) {
+        if (!store.isOwner(id)) {
             throw new ApplicationException(STORE_NOT_OWNER, HttpStatus.UNAUTHORIZED);
         }
 
@@ -42,5 +40,4 @@ public class MenuService {
 
         return new CreateResponse(menu);
     }
-
 }
