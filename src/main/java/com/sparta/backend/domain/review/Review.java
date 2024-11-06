@@ -2,6 +2,7 @@ package com.sparta.backend.domain.review;
 
 import com.sparta.backend.domain.BaseEntity;
 import com.sparta.backend.domain.menu.Menu;
+import com.sparta.backend.domain.order.Order;
 import com.sparta.backend.domain.store.Store;
 import com.sparta.backend.domain.user.User;
 import jakarta.persistence.Entity;
@@ -41,4 +42,6 @@ public class Review extends BaseEntity {
     private String content;
 
     private String image;
+
+    public Review(
 }
