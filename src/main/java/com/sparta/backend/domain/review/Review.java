@@ -30,7 +30,6 @@ public class Review extends BaseEntity {
     private String content;
 
     private String image;
-
     public Review(Order order, User user, Integer starRating, String content) {
         this.order = order;
         this.user = user;
