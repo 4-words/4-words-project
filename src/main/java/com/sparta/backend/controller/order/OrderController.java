@@ -9,11 +9,7 @@ import com.sparta.backend.service.order.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,6 +23,7 @@ public class OrderController {
     public ResponseEntity<CreateOrderResponse> createOrder(
             @PathVariable Long storeId,
             @PathVariable Long menuId,
+            @RequestBody CreateOrderRequest request,
             @AuthenticationUserId Long id) {
         CreateOrderResponse response = orderService.createOrder(storeId, menuId, request, id);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -42,5 +39,11 @@ public class OrderController {
     public ResponseEntity<List<RetrieveOrderStatusResponse>> retrieveOrderStatus(@AuthenticationUserId Long id) {
         List<RetrieveOrderStatusResponse> orders = orderService.retrieveOrderStatus(id);
         return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
+
+    @PutMapping("/{orderId}/accept")
+    public ResponseEntity<String> acceptOrder(@PathVariable Long orderId, @AuthenticationUserId Long id) {
+        orderService.acceptOrder(orderId, id);
+        return new ResponseEntity<>("주문수락", HttpStatus.OK);
     }
 }
