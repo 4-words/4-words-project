@@ -46,9 +46,25 @@ public class User extends BaseEntity {
         this.role = role;
     }
 
+    public User(final Long id, final String email, final String password, final String name, final String address, final String image,
+                final Role role) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.address = address;
+        this.image = image;
+        this.role = role;
+    }
+
     public static User of(final String email, final String password, final String name, final String address,
                           final String image, final String role) {
         return new User(email, password, name, address, image, Role.from(role));
+    }
+
+    public static User of(final Long id, final String email, final String password, final String name, final String address,
+                          final String image, final String role) {
+        return new User(id, email, password, name, address, image, Role.from(role));
     }
 
     public boolean isValidPassword(final String password, final PasswordEncoder passwordEncoder) {
