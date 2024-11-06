@@ -26,6 +26,8 @@ public enum ErrorCodes {
     STORE_NOT_OWNER("가게의 사장이 아닙니다.", 4004L),
     MENU_NOT_FOUND("해당 메뉴를 찾을 수 없습니다.", 5001L),
     DELIVERY_NOT_COMPLETE("배달이 아직 완료되지 않았습니다.", 6001L),
+    REVIEW_NOT_FOUND("리뷰가 존재 하지 않습니다.", 6002L),
+    STAR_NOT_VALID("별점 범위(1~5)에 유효하지 않습니다.", 6003L),
     ORDER_NOT_FOUND("주문이 존재하지 않습니다.", 7001L),
     INVALID_STATUS("유효하지 않는 상태입니다.", 7002L);
 

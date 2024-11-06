@@ -27,14 +27,24 @@ public class ReviewController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
-    @GetMapping("/{orderId}/reviews")
-    public List<ResponseDto> getReviewsByOrderId(@PathVariable Long orderId,@PathVariable Long reviewId) {
-        return reviewService.getReviewsByOrderId(orderId);
+    @GetMapping("/{orderId}/reviews/{reviewId}")
+    public ResponseEntity<List<ResponseDto>> getReviewsByOrderId(
+            @PathVariable Long orderId,
+            @PathVariable Long reviewId
+    ) {
+        List<ResponseDto> response = reviewService.getReviewsByOrderId(orderId, reviewId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/starRating")
-    public List<ResponseDto> getReviewsByStar(@RequestParam Integer min, @RequestParam Integer max) {
-        return reviewService.getReviewsByStar(starRating);
+    @GetMapping("/{orderId}/starRating/{reviewId}")
+    public ResponseEntity<List<ResponseDto>> getReviewsByStar(
+            @RequestParam Integer minStar,
+            @RequestParam Integer maxStar,
+            @PathVariable Long orderId,
+            @PathVariable Long reviewId
+    ) {
+        List<ResponseDto> response = reviewService.getReviewsByStar(minStar, maxStar, orderId, reviewId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
 
     }
 }

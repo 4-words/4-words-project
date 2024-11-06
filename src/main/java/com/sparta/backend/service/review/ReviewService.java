@@ -46,21 +46,32 @@ public class ReviewService {
     }
 
     //주문별로 조회
-    public List<ResponseDto> getReviewsByOrderId(Long orderId) {
-        Order order = orderRepository.findById(orderId)
+    public List<ResponseDto> getReviewsByOrderId(Long orderId, Long reviewId) {
+        orderRepository.findById(orderId)
                 .orElseThrow(() -> new ApplicationException(ORDER_NOT_FOUND, HttpStatus.NOT_FOUND));
-        Review review = reviewRepository.findById()
+        reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new ApplicationException(REVIEW_NOT_FOUND, HttpStatus.NOT_FOUND));
+
         List<Review> reviews = reviewRepository.findByOrderIdOrderByCreatedAtDesc(orderId);
         return reviews.stream()
                 .map(ResponseDto::new)
                 .collect(Collectors.toList());
     }
     //별점범위로 조회
-    public List<ResponseDto> getReviewsByStar(Integer min, Integer max) {
-        Order order = orderRepository.findById(orderId)
+    public List<ResponseDto> getReviewsByStar(Integer minStar, Integer maxStar, Long orderId, Long reviewId) {
+        orderRepository.findById(orderId)
                 .orElseThrow(() -> new ApplicationException(ORDER_NOT_FOUND, HttpStatus.NOT_FOUND));
+        reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new ApplicationException(REVIEW_NOT_FOUND, HttpStatus.NOT_FOUND));
 
-        List<Review> reviews = reviewRepository.findByStarsBetween(min, max);
+        int min = (minStar != null) ? minStar : 1;
+        int max = (maxStar != null) ? maxStar : 5;
+
+        if (min < 1 || max > 5 || min > max) {
+            throw new ApplicationException(STAR_NOT_VALID, HttpStatus.NOT_FOUND);
+        }
+
+        List<Review> reviews = reviewRepository.findByStarRatingBetween(minStar, maxStar);
         return reviews.stream()
                 .map(ResponseDto::new)
                 .collect(Collectors.toList());
