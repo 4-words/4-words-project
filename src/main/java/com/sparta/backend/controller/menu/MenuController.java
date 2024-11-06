@@ -51,4 +51,16 @@ public class MenuController {
         menuService.deleteMenu(storeId, menuId, id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("메뉴 삭제 완료");
     }
+
+    @DeleteMapping("/{menuId}/image")
+    public ResponseEntity<String> deleteMenuImage(
+            @PathVariable Long storeId,
+            @PathVariable Long menuId,
+            @AuthenticationUserId Long id
+    ) {
+        menuService.deleteMenuImage(storeId, menuId, id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("메뉴 이미지 삭제 완료");
+    }
+
 }
+
