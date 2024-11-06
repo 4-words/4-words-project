@@ -61,6 +61,5 @@ public class MenuController {
         menuService.deleteMenuImage(storeId, menuId, id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("메뉴 이미지 삭제 완료");
     }
-
 }
 
