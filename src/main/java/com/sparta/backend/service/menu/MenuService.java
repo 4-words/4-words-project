@@ -80,4 +80,19 @@ public class MenuService {
         menu.delete(MenuStatus.INACTIVE);
         menuRepository.saveAndFlush(menu);
     }
+
+    @Transactional
+    public void deleteMenuImage(Long storeId, Long menuId, Long id) {
+        Store store = storeRepository.findByIdAndStatus(storeId, StoreStatus.ACTIVE)
+                .orElseThrow(() -> new ApplicationException(STORE_NOT_FOUND, HttpStatus.NOT_FOUND));
+
+        Menu menu = menuRepository.findByIdAndStatus(menuId, MenuStatus.ACTIVE)
+                .orElseThrow(() -> new ApplicationException(MENU_NOT_FOUND, HttpStatus.NOT_FOUND));
+
+        if (!store.isOwner(id)) {
+            throw new ApplicationException(STORE_NOT_OWNER, HttpStatus.UNAUTHORIZED);
+        }
+
+        menu.deleteImage();
+    }
 }

@@ -45,6 +45,5 @@ public class ReviewController {
     ) {
         List<ResponseDto> response = reviewService.getReviewsByStar(minStar, maxStar, orderId, reviewId);
         return new ResponseEntity<>(response, HttpStatus.OK);
-
     }
 }

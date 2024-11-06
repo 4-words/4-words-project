@@ -45,7 +45,6 @@ public class ReviewService {
         return responseDto;
     }
 
-    //주문별로 조회
     public List<ResponseDto> getReviewsByOrderId(Long orderId, Long reviewId) {
         orderRepository.findById(orderId)
                 .orElseThrow(() -> new ApplicationException(ORDER_NOT_FOUND, HttpStatus.NOT_FOUND));
@@ -57,7 +56,7 @@ public class ReviewService {
                 .map(ResponseDto::new)
                 .collect(Collectors.toList());
     }
-    //별점범위로 조회
+    
     public List<ResponseDto> getReviewsByStar(Integer minStar, Integer maxStar, Long orderId, Long reviewId) {
         orderRepository.findById(orderId)
                 .orElseThrow(() -> new ApplicationException(ORDER_NOT_FOUND, HttpStatus.NOT_FOUND));

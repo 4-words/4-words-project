@@ -53,6 +53,10 @@ public class Menu extends BaseEntity {
     public void delete(MenuStatus menuStatus) {
         this.status = menuStatus;
     }
+
+    public void deleteImage() {
+        this.image = null;
+    }
 }
 
 
