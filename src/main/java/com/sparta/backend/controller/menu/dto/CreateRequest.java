@@ -11,7 +11,7 @@ public class CreateRequest {
     @NotNull
     private Integer price;
 
-    public CreateRequest(String name, Integer price) {
+    public CreateRequest(final String name, final Integer price) {
         this.name = name;
         this.price = price;
     }
