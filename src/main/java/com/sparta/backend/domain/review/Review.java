@@ -2,6 +2,7 @@ package com.sparta.backend.domain.review;
 
 import com.sparta.backend.domain.BaseEntity;
 import com.sparta.backend.domain.order.Order;
+import com.sparta.backend.domain.store.Store;
 import com.sparta.backend.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -16,6 +17,10 @@ public class Review extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_id")
+    private Store store;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")

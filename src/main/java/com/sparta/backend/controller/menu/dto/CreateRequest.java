@@ -10,4 +10,9 @@ public class CreateRequest {
     private String name;
     @NotNull
     private Integer price;
+
+    public CreateRequest(String name, Integer price) {
+        this.name = name;
+        this.price = price;
+    }
 }
