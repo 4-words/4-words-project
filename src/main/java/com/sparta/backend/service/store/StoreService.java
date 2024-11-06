@@ -83,6 +83,7 @@ public class StoreService {
         return storeRepository.retrieveByCategory(type, PageRequest.of(page, limit));
     }
 
+    @Transactional(readOnly = true)
     public Page<StoreRetrieveSortResponse> retrieveBySort(
             final String orderBy,
             final int page,
