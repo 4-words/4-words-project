@@ -50,6 +50,5 @@ public class OrderLoggingAspect {
 
         log.info("주문 상태가 변경되었습니다. 변경 요청 시각: {}, 가게 ID: {}, 주문 ID: {}, 변경된 상태: {}"
                 , statusChangedAt, storeId, orderId, newStatus);
-
     }
 }
