@@ -3,6 +3,8 @@ package com.sparta.backend.service.order;
 import com.sparta.backend.common.ApplicationException;
 import com.sparta.backend.controller.order.dto.CreateOrderRequest;
 import com.sparta.backend.controller.order.dto.CreateOrderResponse;
+import com.sparta.backend.controller.order.dto.RetrieveOrderListResponse;
+import com.sparta.backend.controller.order.dto.RetrieveOrderStatusResponse;
 import com.sparta.backend.domain.menu.Menu;
 import com.sparta.backend.domain.menu.MenuRepository;
 import com.sparta.backend.domain.order.Order;
@@ -15,9 +17,10 @@ import com.sparta.backend.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-
+import java.util.List;
 
 import static com.sparta.backend.common.ErrorCodes.*;
 
@@ -30,10 +33,10 @@ public class OrderService {
     private final MenuRepository menuRepository;
     private final UserRepository userRepository;
 
-    public CreateOrderResponse createOrder(CreateOrderRequest request, Long id) {
-        Store store = storeRepository.findById(request.getStoreId())
+    public CreateOrderResponse createOrder(Long storeId, Long menuId,CreateOrderRequest request, Long id) {
+        Store store = storeRepository.findById(storeId)
                 .orElseThrow(()-> new ApplicationException(STORE_NOT_FOUND, HttpStatus.NOT_FOUND));
-        Menu menu = menuRepository.findById(request.getMenuId())
+        Menu menu = menuRepository.findById(menuId)
                 .orElseThrow(()-> new ApplicationException(MENU_NOT_FOUND, HttpStatus.NOT_FOUND));
         User user = userRepository.findById(id)
                 .orElseThrow(()-> new ApplicationException(USER_NOT_FOUND, HttpStatus.NOT_FOUND));
@@ -48,5 +51,44 @@ public class OrderService {
         Order order = new Order(user,store,menu, request.getType(), request.getTotalPrice(), OrderStatus.WAITING);
         Order savedOrder = orderRepository.save(order);
         return new CreateOrderResponse(savedOrder);
+    }
+
+    public List<RetrieveOrderListResponse> retrieveOrder(Long id) {
+        List<RetrieveOrderListResponse> orders = orderRepository.findByUserIdAndStatus(id,OrderStatus.COMPLETE).stream()
+                .map(RetrieveOrderListResponse::new).toList();
+        return orders;
+    }
+
+    public List<RetrieveOrderStatusResponse> retrieveOrderStatus(Long id) {
+        List<RetrieveOrderStatusResponse> orders = orderRepository.findByUserId(id).stream()
+                .map(RetrieveOrderStatusResponse::new).toList();
+        return orders;
+    }
+
+    @Transactional
+    public void acceptOrder(Long orderId, Long id) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ApplicationException(ORDER_NOT_FOUND, HttpStatus.NOT_FOUND));
+        User user = userRepository.findById(id)
+                .orElseThrow(()-> new ApplicationException(USER_NOT_FOUND, HttpStatus.NOT_FOUND));
+        Long ownerId = order.getStore().getId();
+        if(!user.getId().equals(ownerId)) {
+            throw new ApplicationException(STORE_NOT_OWNER, HttpStatus.FORBIDDEN);
+        }
+
+        OrderStatus currentStatus = order.getStatus();
+
+        if (currentStatus.equals(OrderStatus.WAITING)) {
+            order.updateStatus(OrderStatus.COOKING);
+            orderRepository.save(order);
+        } else if (currentStatus.equals(OrderStatus.COOKING)) {
+            order.updateStatus(OrderStatus.DELIVERING);
+            orderRepository.save(order);
+        } else if (currentStatus.equals(OrderStatus.DELIVERING)) {
+            order.updateStatus(OrderStatus.COMPLETE);
+            orderRepository.save(order);
+        } else {
+            throw new ApplicationException(INVALID_STATUS, HttpStatus.BAD_REQUEST);
+        }
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -73,5 +74,11 @@ public class StoreController {
     ) {
         final Page<StoreRetrieveSortResponse> resp = storeService.retrieveBySort(orderBy, page, limit);
         return ResponseEntity.status(HttpStatus.OK).body(resp);
+    }
+
+    @PatchMapping("/{storeId}")
+    public ResponseEntity<Void> closeDownStore(@PathVariable final Long storeId) {
+        storeService.closeDown(storeId);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

@@ -47,6 +47,7 @@ public class StoreService {
         return savedStore.getId();
     }
 
+    @Transactional(readOnly = true)
     public StoreRetrieveResponse retrieve(final Long storeId) {
         final Store store = storeRepository.findByIdAndStatus(storeId, StoreStatus.ACTIVE)
                 .orElseThrow(() -> new ApplicationException(STORE_NOT_FOUND, HttpStatus.NOT_FOUND));
@@ -67,11 +68,13 @@ public class StoreService {
         if (!store.isOwner(loginId)) {
             throw new ApplicationException(STORE_NOT_FOUND, HttpStatus.FORBIDDEN);
         }
+
         final String imageUrl = fileUploader.uploadFiles(image);
         store.update(req.name(), req.category(), imageUrl, req.introduce(), req.address(), req.openedAt(),
                 req.closedAt(), req.minOrderPrice());
     }
 
+    @Transactional(readOnly = true)
     public Page<StoreRetrieveResponseByCategory> retrieveByCategory(
             final String type,
             final int page,
@@ -86,5 +89,12 @@ public class StoreService {
             final int limit
     ) {
         return storeRepository.retrieveBySort(orderBy, PageRequest.of(page, limit));
+    }
+
+    @Transactional
+    public void closeDown(final Long storeId) {
+        final Store store = storeRepository.findByIdAndStatus(storeId, StoreStatus.ACTIVE)
+                .orElseThrow(() -> new ApplicationException(STORE_NOT_FOUND, HttpStatus.NOT_FOUND));
+        store.changeStatus();
     }
 }

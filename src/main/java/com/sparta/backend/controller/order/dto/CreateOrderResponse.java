@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 public class CreateOrderResponse {
 
     private Long id;
+    private Long storeId;
     private OrderType orderType;
     private String menuName;
     private Integer totalPrice;
@@ -18,6 +19,7 @@ public class CreateOrderResponse {
 
     public CreateOrderResponse(Order order) {
         this.id = order.getId();
+        this.storeId = order.getStore().getId();
         this.orderType = order.getType();
         this.menuName = order.getMenu().getName();
         this.totalPrice = order.getTotalPrice();
