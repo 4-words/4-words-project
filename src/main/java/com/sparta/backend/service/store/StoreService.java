@@ -16,6 +16,7 @@ import com.sparta.backend.domain.store.Store;
 import com.sparta.backend.domain.store.StoreRepository;
 import com.sparta.backend.domain.store.StoreStatus;
 import com.sparta.backend.domain.store.dto.StoreRetrieveResponseByCategory;
+import com.sparta.backend.domain.store.dto.StoreRetrieveSortResponse;
 import com.sparta.backend.domain.user.User;
 import com.sparta.backend.domain.user.UserRepository;
 import java.util.List;
@@ -80,6 +81,14 @@ public class StoreService {
             final int limit
     ) {
         return storeRepository.retrieveByCategory(type, PageRequest.of(page, limit));
+    }
+
+    public Page<StoreRetrieveSortResponse> retrieveBySort(
+            final String orderBy,
+            final int page,
+            final int limit
+    ) {
+        return storeRepository.retrieveBySort(orderBy, PageRequest.of(page, limit));
     }
 
     @Transactional
