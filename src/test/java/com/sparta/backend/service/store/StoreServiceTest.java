@@ -1,9 +1,5 @@
 package com.sparta.backend.service.store;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.mockito.Mockito.when;
-
 import com.sparta.backend.client.S3FileUploader;
 import com.sparta.backend.common.ApplicationException;
 import com.sparta.backend.controller.menu.dto.CreateRequest;
@@ -18,9 +14,6 @@ import com.sparta.backend.domain.store.StoreRepository;
 import com.sparta.backend.domain.store.StoreStatus;
 import com.sparta.backend.domain.user.User;
 import com.sparta.backend.domain.user.UserRepository;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,6 +23,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
@@ -60,8 +62,8 @@ class StoreServiceTest {
                 "korea",
                 "test introduce",
                 "test address",
-                LocalDateTime.now(),
-                LocalDateTime.now(),
+                LocalTime.now(),
+                LocalTime.now(),
                 1000
         );
         final MultipartFile file = new MockMultipartFile(
@@ -98,8 +100,8 @@ class StoreServiceTest {
         // given
         final Long storeId = 1L;
         final StoreStatus status = StoreStatus.ACTIVE;
-        final LocalDateTime openedAt = LocalDateTime.of(2024, 11, 6, 14, 54, 5);
-        final LocalDateTime closedAt = LocalDateTime.of(2024, 11, 6, 14, 54, 5);
+        final LocalTime openedAt = LocalTime.of( 14, 54, 5);
+        final LocalTime closedAt = LocalTime.of( 14, 54, 5);
 
         final User user = User.of("test email", "test password", "test name", "test address"
                 , "test image", "user");
@@ -132,8 +134,8 @@ class StoreServiceTest {
     void update_test() {
         // given
         final Long storeId = 1L;
-        final LocalDateTime openedAt = LocalDateTime.of(2024, 11, 6, 14, 54, 5);
-        final LocalDateTime closedAt = LocalDateTime.of(2024, 11, 6, 14, 54, 5);
+        final LocalTime openedAt = LocalTime.of(14, 54, 5);
+        final LocalTime closedAt = LocalTime.of(14, 54, 5);
 
         final StoreUpdateRequest req = new StoreUpdateRequest("storeName", "korea", "test introduce", "test address",
                 openedAt, closedAt, 1000);
@@ -157,8 +159,8 @@ class StoreServiceTest {
         // given
         final Long storeId = 1L;
         final Long loginId = 1L;
-        final LocalDateTime openedAt = LocalDateTime.of(2024, 11, 6, 14, 54, 5);
-        final LocalDateTime closedAt = LocalDateTime.of(2024, 11, 6, 14, 54, 5);
+        final LocalTime openedAt = LocalTime.of(14, 54, 5);
+        final LocalTime closedAt = LocalTime.of(14, 54, 5);
 
         final StoreUpdateRequest req = new StoreUpdateRequest("updateStoreName", "korea", "update introduce",
                 "update address",
@@ -199,8 +201,8 @@ class StoreServiceTest {
         // given
         final Long storeId = 1L;
         final Long loginId = 2L;
-        final LocalDateTime openedAt = LocalDateTime.of(2024, 11, 6, 14, 54, 5);
-        final LocalDateTime closedAt = LocalDateTime.of(2024, 11, 6, 14, 54, 5);
+        final LocalTime openedAt = LocalTime.of(14, 54, 5);
+        final LocalTime closedAt = LocalTime.of(14, 54, 5);
 
         final StoreUpdateRequest req = new StoreUpdateRequest("updateStoreName", "korea", "update introduce",
                 "update address",

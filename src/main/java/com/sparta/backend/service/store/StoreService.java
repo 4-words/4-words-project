@@ -19,6 +19,9 @@ import com.sparta.backend.domain.store.dto.StoreRetrieveResponseByCategory;
 import com.sparta.backend.domain.store.dto.StoreRetrieveSortResponse;
 import com.sparta.backend.domain.user.User;
 import com.sparta.backend.domain.user.UserRepository;
+
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -40,9 +43,12 @@ public class StoreService {
     public Long create(final Long userId, final StoreCreateRequest req, final MultipartFile image) {
         final User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ApplicationException(USER_NOT_FOUND, HttpStatus.NOT_FOUND));
+
+        final LocalTime opendAt = LocalTime.parse(req.openedAt(), DateTimeFormatter.ofPattern( "HH:mm" ) );
+        final LocalTime closedAt = LocalTime.parse(req.closedAt(), DateTimeFormatter.ofPattern( "HH:mm" ) );
         final String imageUrl = fileUploader.uploadFiles(image);
         final Store store = Store.of(user, req.name(), req.category(), imageUrl, req.introduce(), req.address(),
-                req.openedAt(), req.closedAt(), req.minOrderPrice());
+                opendAt, closedAt, req.minOrderPrice());
         final Store savedStore = storeRepository.save(store);
         return savedStore.getId();
     }

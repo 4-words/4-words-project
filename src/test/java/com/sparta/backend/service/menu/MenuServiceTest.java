@@ -4,7 +4,6 @@ import com.sparta.backend.client.S3FileUploader;
 import com.sparta.backend.common.ApplicationException;
 import com.sparta.backend.controller.menu.dto.CreateRequest;
 import com.sparta.backend.domain.menu.MenuRepository;
-import com.sparta.backend.domain.menu.MenuStatus;
 import com.sparta.backend.domain.store.Store;
 import com.sparta.backend.domain.store.StoreRepository;
 import com.sparta.backend.domain.store.StoreStatus;
@@ -18,7 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -43,19 +42,13 @@ class MenuServiceTest {
     void STORE_NOT_FOUND() {
 
         // given
-        final LocalDateTime openedAt = LocalDateTime.of(
-                2024,
-                11,
-                6,
+        final LocalTime openedAt = LocalTime.of(
                 14,
                 23,
                 24,
                 4);
 
-        final LocalDateTime closedAt = LocalDateTime.of(
-                2024,
-                11,
-                6,
+        final LocalTime closedAt = LocalTime.of(
                 20,
                 23,
                 24,

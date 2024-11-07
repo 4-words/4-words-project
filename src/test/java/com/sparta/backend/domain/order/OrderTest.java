@@ -7,6 +7,8 @@ import com.sparta.backend.domain.menu.Menu;
 import com.sparta.backend.domain.store.Store;
 import com.sparta.backend.domain.user.User;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,8 +18,8 @@ class OrderTest {
     @DisplayName("오더 상태 변경 테스트")
     void order_updateStatus() {
         // given
-        final LocalDateTime openedAt = LocalDateTime.of(2024, 11, 6, 14, 54, 5);
-        final LocalDateTime closedAt = LocalDateTime.of(2024, 11, 6, 14, 54, 5);
+        final LocalTime openedAt = LocalTime.of(14, 54, 5);
+        final LocalTime closedAt = LocalTime.of(14, 54, 5);
 
         final User user = User.of(1L, "테스트 이메일", "테스트 패스워드", "테스트 유저", "테스트 주소"
                 , "테스트 이미지", "user");

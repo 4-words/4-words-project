@@ -4,11 +4,10 @@ import com.sparta.backend.controller.menu.dto.CreateRequest;
 import com.sparta.backend.controller.menu.dto.UpdateRequest;
 import com.sparta.backend.domain.store.Store;
 import com.sparta.backend.domain.user.User;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,19 +18,13 @@ class MenuTest {
     void menu_update() {
 
         //given
-        final LocalDateTime openedAt = LocalDateTime.of(
-                2024,
-                11,
-                6,
+        final LocalTime openedAt = LocalTime.of(
                 14,
                 23,
                 24,
                 4);
 
-        final LocalDateTime closedAt = LocalDateTime.of(
-                2024,
-                11,
-                6,
+        final LocalTime closedAt = LocalTime.of(
                 20,
                 23,
                 24,
@@ -72,19 +65,13 @@ class MenuTest {
     @DisplayName("메뉴 삭제 테스트")
     void menu_delete() {
         //given
-        final LocalDateTime openedAt = LocalDateTime.of(
-                2024,
-                11,
-                6,
+        final LocalTime openedAt = LocalTime.of(
                 14,
                 23,
                 24,
                 4);
 
-        final LocalDateTime closedAt = LocalDateTime.of(
-                2024,
-                11,
-                6,
+        final LocalTime closedAt = LocalTime.of(
                 20,
                 23,
                 24,
@@ -123,19 +110,13 @@ class MenuTest {
     @DisplayName("메뉴 이미지 삭제")
     void menu_deleteImage() {
         //given
-        final LocalDateTime openedAt = LocalDateTime.of(
-                2024,
-                11,
-                6,
+        final LocalTime openedAt = LocalTime.of(
                 14,
                 23,
                 24,
                 4);
 
-        final LocalDateTime closedAt = LocalDateTime.of(
-                2024,
-                11,
-                6,
+        final LocalTime closedAt = LocalTime.of(
                 20,
                 23,
                 24,
