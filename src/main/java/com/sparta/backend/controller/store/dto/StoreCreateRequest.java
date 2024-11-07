@@ -7,8 +7,8 @@ public record StoreCreateRequest(
         String category,
         String introduce,
         String address,
-        LocalTime openedAt,
-        LocalTime closedAt,
+        String openedAt,
+        String closedAt,
         Integer minOrderPrice
 ) {
 }
