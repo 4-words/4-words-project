@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import static com.sparta.backend.common.ErrorCodes.*;
@@ -41,7 +42,7 @@ public class OrderService {
         User user = userRepository.findById(id)
                 .orElseThrow(()-> new ApplicationException(USER_NOT_FOUND, HttpStatus.NOT_FOUND));
 
-        LocalDateTime now = LocalDateTime.now();
+        LocalTime now = LocalTime.now();
         if(now.isBefore(store.getOpenedAt()) || now.isAfter(store.getClosedAt())) {
             throw new ApplicationException(STORE_CLOSED, HttpStatus.FORBIDDEN);
         }

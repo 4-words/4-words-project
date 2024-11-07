@@ -2,20 +2,12 @@ package com.sparta.backend.domain.store;
 
 import com.sparta.backend.domain.BaseEntity;
 import com.sparta.backend.domain.user.User;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalTime;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -41,9 +33,9 @@ public class Store extends BaseEntity {
 
     private String address;
 
-    private LocalDateTime openedAt;
+    private LocalTime openedAt;
 
-    private LocalDateTime closedAt;
+    private LocalTime closedAt;
 
     private Integer minOrderPrice;
 
@@ -58,8 +50,8 @@ public class Store extends BaseEntity {
                  final String image,
                  final String introduce,
                  final String address,
-                 final LocalDateTime openedAt,
-                 final LocalDateTime closedAt,
+                 final LocalTime openedAt,
+                 final LocalTime closedAt,
                  final Integer minOrderPrice,
                  final StoreStatus status
     ) {
@@ -82,8 +74,8 @@ public class Store extends BaseEntity {
             final String image,
             final String introduce,
             final String address,
-            final LocalDateTime openedAt,
-            final LocalDateTime closedAt,
+            final LocalTime openedAt,
+            final LocalTime closedAt,
             final Integer minOrderPrice
     ) {
         return new Store(user, name, Category.from(category), image, introduce, address, openedAt, closedAt,
@@ -100,8 +92,8 @@ public class Store extends BaseEntity {
             final String image,
             final String introduce,
             final String address,
-            final LocalDateTime openedAt,
-            final LocalDateTime closedAt,
+            final LocalTime openedAt,
+            final LocalTime closedAt,
             final Integer minOrderPrice
     ) {
         this.name = name;

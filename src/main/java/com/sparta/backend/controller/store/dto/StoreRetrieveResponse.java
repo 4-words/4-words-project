@@ -3,6 +3,7 @@ package com.sparta.backend.controller.store.dto;
 import com.sparta.backend.controller.menu.dto.MenuRetrieveResponse;
 import com.sparta.backend.domain.store.Store;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 public record StoreRetrieveResponse(
@@ -12,8 +13,8 @@ public record StoreRetrieveResponse(
         String image,
         String introduce,
         String address,
-        LocalDateTime openedAt,
-        LocalDateTime closedAt,
+        LocalTime openedAt,
+        LocalTime closedAt,
         List<MenuRetrieveResponse> menus,
         Integer minOrderPrice
 ) {
